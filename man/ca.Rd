@@ -38,43 +38,46 @@ Computes a simple correspondence analysis based on the singular value
 decomposition.
 }
 \examples{
-## Load data
-data("zuni", package = "folio")
+## Data from Lebart et al. 2006, p. 170-172
+data("colours")
 
 ## The chi square of independence between the two variables
-stats::chisq.test(zuni)
+stats::chisq.test(colours)
 
 ## Compute correspondence analysis
-X <- ca(zuni)
+X <- ca(colours)
 
 ## Get row coordinates
-get_coordinates(X, margin = 1)
+head(get_coordinates(X, margin = 1))
 
 ## Get column coordinates
-get_coordinates(X, margin = 2)
+head(get_coordinates(X, margin = 2))
 
 ## Get row distances to centroid
-get_distances(X, margin = 1)
+head(get_distances(X, margin = 1))
 
 ## Get row inertias
-get_inertia(X, margin = 1)
+head(get_inertia(X, margin = 1))
 
 ## Get row contributions
-get_contributions(X, margin = 1)
+head(get_contributions(X, margin = 1))
 
 ## Get eigenvalues
 get_eigenvalues(X)
 }
 \references{
-Greenacre, Michael J. \emph{Theory and Applications of Correspondence
-Analysis}. London: Academic Press, 1984.
+Greenacre, M. J. \emph{Theory and Applications of Correspondence Analysis}.
+London: Academic Press, 1984.
+
+Greenacre, M. J. \emph{Correspondence Analysis in Practice}. Seconde edition.
+Interdisciplinary Statistics Series. Boca Raton: Chapman & Hall/CRC, 2007.
 
 Lebart, L., Piron, M. and Morineau, A. \emph{Statistique exploratoire
 multidimensionnelle: visualisation et inférence en fouille de données}.
 Paris: Dunod, 2006.
 }
 \seealso{
-\code{\link[=mutator]{get_*()}}, \code{\link[stats:predict]{stats::predict()}}, \code{\link[=svd]{svd()}}
+\code{\link[=svd]{svd()}}
 
 Other multivariate analysis: 
 \code{\link{pca}()},

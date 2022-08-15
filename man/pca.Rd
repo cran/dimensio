@@ -55,10 +55,12 @@ the supplementary rows (individuals).}
 the supplementary columns (variables).}
 
 \item{weight_row}{A \code{\link{numeric}} vector specifying the active row (individual)
-weights. If \code{NULL} (the default), no weights are used.}
+weights. If \code{NULL} (the default), uniform weights are used. Row weights are
+internally normalized to sum 1}
 
 \item{weight_col}{A \code{\link{numeric}} vector specifying the active column
-(variable) weights. If \code{NULL} (the default), no weights are used.}
+(variable) weights. If \code{NULL} (the default), uniform weights (1) are
+used.}
 }
 \value{
 A \code{\linkS4class{PCA}} object.
@@ -69,22 +71,22 @@ decomposition.
 }
 \examples{
 ## Load data
-data("compiegne", package = "folio")
+data("iris")
 
 ## Compute principal components analysis
-X <- pca(compiegne, scale = TRUE, sup_col = 7:10)
+X <- pca(iris, scale = TRUE, sup_row = sample(150, 10), sup_col = 2)
 
 ## Get row coordinates
-get_coordinates(X, margin = 1)
+head(get_coordinates(X, margin = 1))
 
 ## Get column coordinates
-get_coordinates(X, margin = 2)
+head(get_coordinates(X, margin = 2))
 
 ## Get row contributions
-get_contributions(X, margin = 1)
+head(get_contributions(X, margin = 1))
 
 ## Get correlations between variables and dimensions
-get_correlations(X)
+head(get_correlations(X))
 
 ## Get eigenvalues
 get_eigenvalues(X)
@@ -95,7 +97,7 @@ multidimensionnelle: visualisation et inférence en fouille de données}.
 Paris: Dunod, 2006.
 }
 \seealso{
-\code{\link[=mutator]{get_*()}}, \code{\link[stats:predict]{stats::predict()}}, \code{\link[=svd]{svd()}}
+\code{\link[=svd]{svd()}}
 
 Other multivariate analysis: 
 \code{\link{ca}()},

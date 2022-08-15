@@ -1,60 +1,35 @@
-library(ggrepel)
-
-## Random samples from x with replacement
-x <- rnorm(20) # numeric
-boot <- bootstrap(x, do = mean, n = 100) # Sample mean
-summary(boot)
-
-## Sample observations from a multinomial distribution
-x <- sample(1:100, 100, TRUE) # integer
-boot <- bootstrap(x, do = median, n = 100)
-summary(boot)
-
-## Partial bootstrap on CA
+## Bootstrap on CA
 ## Data from Lebart et al. 2006, p. 170-172
-color <- data.frame(
-  brun = c(68, 15, 5, 20),
-  chatain = c(119, 54, 29, 84),
-  roux = c(26, 14, 14, 17),
-  blond = c(7, 10, 16, 94),
-  row.names = c("marron", "noisette", "vert", "bleu")
-)
+data("colours")
 
 ## Compute correspondence analysis
-X <- ca(color)
-
-## Plot results
-plot(X) +
-  ggrepel::geom_label_repel()
+X <- ca(colours)
 
 ## Bootstrap (30 replicates)
 Y <- bootstrap(X, n = 30)
 
-\donttest{
+\dontrun{
 ## Get replicated coordinates
 get_replications(Y, margin = 1)
 get_replications(Y, margin = 2)
 }
 
 ## Plot with ellipses
-plot_rows(Y) +
+plot_rows(Y, colour = "group") +
   ggplot2::stat_ellipse()
 
-plot_columns(Y) +
-  ggplot2::stat_ellipse()
+## Plot with convex hulls
+plot_columns(Y, colour = "group", fill = "group") +
+  stat_hull(geom = "polygon", alpha = 0.5)
 
-## Partial bootstrap on PCA
+## Bootstrap on PCA
 ## Compute principal components analysis
-data(iris)
+data("iris")
 X <- pca(iris)
-
-## Plot results
-plot_columns(X) +
-  ggrepel::geom_label_repel()
 
 ## Bootstrap (30 replicates)
 Y <- bootstrap(X, n = 30)
 
 ## Plot with ellipses
-plot_columns(Y) +
+plot_columns(Y, colour = "group") +
   ggplot2::stat_ellipse()

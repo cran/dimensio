@@ -2,7 +2,7 @@
 #' \tabular{ll}{
 #'  **Package:** \tab dimensio \cr
 #'  **Type:** \tab Package \cr
-#'  **Version:** \tab 0.2.2 \cr
+#'  **Version:** \tab 0.3.0 \cr
 #'  **License:** \tab GPL-3 \cr
 #'  **Zenodo:** \tab \doi{10.5281/zenodo.4478530} \cr
 #' }
@@ -21,7 +21,7 @@
 #' Nicolas Frerebeau\cr
 #' \email{nicolas.frerebeau@@u-bordeaux-montaigne.fr}
 #'
-#' IRAMAT-CRP2A (UMR 5060)\cr
+#' Archéosciences Bordeaux (UMR 6034)\cr
 #' Maison de l'Archéologie\cr
 #' Université Bordeaux Montaigne\cr
 #' F-33607 Pessac cedex\cr
@@ -33,12 +33,14 @@
 "_PACKAGE"
 
 #' @importFrom ggplot2 aes arrow coord_fixed geom_col geom_hline geom_line
-#' geom_path geom_point geom_segment geom_vline ggplot scale_x_continuous
-#' scale_x_discrete scale_y_continuous sec_axis waiver
+#' geom_path geom_point geom_segment geom_vline ggplot ggproto layer
+#' scale_x_continuous scale_x_discrete scale_y_continuous sec_axis Stat waiver
+#' @importFrom grDevices chull
 #' @importFrom methods Arith as as<- callGeneric callNextMethod
 #' .hasSlot initialize is new setClass setClassUnion
 #' setGeneric setMethod slot slot<- slotNames validObject .valueClassTest
 #' @importFrom rlang .data
+#' @importFrom utils stack
 NULL
 
 # Notes:

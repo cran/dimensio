@@ -7,6 +7,7 @@ setGeneric("rownames")
 setGeneric("colnames")
 setGeneric("dimnames")
 setGeneric("loadings")
+setGeneric("biplot")
 
 # Extract ======================================================================
 ## Get -------------------------------------------------------------------------
@@ -15,138 +16,17 @@ setGeneric("loadings")
 #' Getters to retrieve parts of an object.
 #' @param x An object from which to get element(s) (a [`CA-class`] or
 #'  [`PCA-class`] object).
-#' @param margin A length-one [`numeric`] vector giving the subscript which the
-#'  data will be returned: `1` indicates individuals/rows (the default), `2`
-#'  indicates variables/columns.
-#' @param sup_name A [`character`] string specifying the name of the column to
-#'  create for supplementary points attribution (see below).
-#' @param digits An [`integer`] indicating the number of decimal places to be
-#'  used.
-#' @param ... Currently not used.
-#' @details
-#'  `get_data()` returns a `data.frame` of original data.
-#'
-#'  `get_contributions()` returns a `data.frame` of contributions to the
-#'  definition of the principal dimensions.
-#'
-#'  `get_coordinates()` returns a `data.frame` of coordinates. An extra column
-#'  (named after `sup_name`) is added specifying whether an observation is a
-#'  supplementary point or not.
-#'
-#'  `get_replications()` returns an `array` of replicated coordinates
-#'  (see [bootstrap()]).
-#'
-#'  `get_correlations()` returns a `data.frame` of correlations between
-#'  variables and dimensions (`PCA`). An extra column (named after `sup_name`)
-#'  is added specifying whether an observation is a supplementary point or not.
-#'
-#'  `get_cos2()` returns a `data.frame` of \eqn{cos^2}{cos2} values (i.e.
-#'  quality of the representation of the points on the factor map). An extra
-#'  column (named after `sup_name`) is added specifying whether an observation
-#'  is a supplementary point or not.
-#'
-#'  `get_eigenvalues()` returns a `data.frame` with the following columns:
-#'  `eigenvalues`, `variance` (percentage of variance) and `cumulative`
-#'  (cumulative percentage of variance).
-#'
-#'  `get_variance()` returns a `numeric` vector giving the percentage of
-#'  explained variance of each dimension.
-#'
+#' @return
 #'  `loadings()` returns variable loadings (i.e. the coefficients of the linear
 #'  combination of the original variables). `loadings()` is only implemented for
 #'  consistency with \pkg{[stats][stats::loadings]}.
-#' @return
-#'  `get_*()` returns a [`numeric`] vector or a [`data.frame`].
-#'
-#'  `loadings()` returns of a [`matrix`] of class [stats::loadings].
 # @example inst/examples/ex-extract.R
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutator
-#' @name mutator
-#' @rdname mutator
-#' @aliases get set
+#' @family mutators
+#' @name mutators
+#' @rdname mutators
 NULL
-
-#' @rdname mutator
-#' @aliases get_coordinates-method
-setGeneric(
-  name = "get_coordinates",
-  def = function(x, ...) standardGeneric("get_coordinates"),
-  valueClass = "data.frame"
-)
-
-#' @rdname mutator
-#' @aliases get_replications-method
-setGeneric(
-  name = "get_replications",
-  def = function(x, ...) standardGeneric("get_replications"),
-  valueClass = "array"
-)
-
-#' @rdname mutator
-#' @aliases get_contributions-method
-setGeneric(
-  name = "get_contributions",
-  def = function(x, ...) standardGeneric("get_contributions"),
-  valueClass = "data.frame"
-)
-
-#' @rdname mutator
-#' @aliases get_correlations-method
-setGeneric(
-  name = "get_correlations",
-  def = function(x, ...) standardGeneric("get_correlations"),
-  valueClass = "data.frame"
-)
-
-#' @rdname mutator
-#' @aliases get_cos2-method
-setGeneric(
-  name = "get_cos2",
-  def = function(x, ...) standardGeneric("get_cos2"),
-  valueClass = "data.frame"
-)
-
-#' @rdname mutator
-#' @aliases get_data-method
-setGeneric(
-  name = "get_data",
-  def = function(x, ...) standardGeneric("get_data"),
-  valueClass = "data.frame"
-)
-
-#' @rdname mutator
-#' @aliases get_distances-method
-setGeneric(
-  name = "get_distances",
-  def = function(x, ...) standardGeneric("get_distances"),
-  valueClass = "numeric"
-)
-
-#' @rdname mutator
-#' @aliases get_eigenvalues-method
-setGeneric(
-  name = "get_eigenvalues",
-  def = function(x) standardGeneric("get_eigenvalues"),
-  valueClass = "data.frame"
-)
-
-#' @rdname mutator
-#' @aliases get_inertia-method
-setGeneric(
-  name = "get_inertia",
-  def = function(x, ...) standardGeneric("get_inertia"),
-  valueClass = "numeric"
-)
-
-#' @rdname mutator
-#' @aliases get_variance-method
-setGeneric(
-  name = "get_variance",
-  def = function(x, ...) standardGeneric("get_variance"),
-  valueClass = "numeric"
-)
 
 ## Subset ----------------------------------------------------------------------
 #' Extract Parts of an Object
@@ -193,7 +73,7 @@ setGeneric(
 #' @example inst/examples/ex-subset.R
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutator
+#' @family mutators
 #' @name subset
 #' @rdname subset
 NULL
@@ -216,10 +96,13 @@ NULL
 #' @return
 #'  A [`CA-class`] object.
 #' @example inst/examples/ex-ca.R
-#' @seealso [`get_*()`][mutator], [stats::predict()], [svd()]
+#' @seealso [svd()]
 #' @references
-#'  Greenacre, Michael J. *Theory and Applications of Correspondence
-#'  Analysis*. London: Academic Press, 1984.
+#'  Greenacre, M. J. *Theory and Applications of Correspondence Analysis*.
+#'  London: Academic Press, 1984.
+#'
+#'  Greenacre, M. J. *Correspondence Analysis in Practice*. Seconde edition.
+#'  Interdisciplinary Statistics Series. Boca Raton: Chapman & Hall/CRC, 2007.
 #'
 #'  Lebart, L., Piron, M. and Morineau, A. *Statistique exploratoire
 #'  multidimensionnelle: visualisation et inférence en fouille de données*.
@@ -258,14 +141,16 @@ setGeneric(
 #' @param sup_col A [`numeric`] or [`logical`] vector specifying the indices of
 #'  the supplementary columns (variables).
 #' @param weight_row A [`numeric`] vector specifying the active row (individual)
-#'  weights. If `NULL` (the default), no weights are used.
+#'  weights. If `NULL` (the default), uniform weights are used. Row weights are
+#'  internally normalized to sum 1
 #' @param weight_col A [`numeric`] vector specifying the active column
-#'  (variable) weights. If `NULL` (the default), no weights are used.
+#'  (variable) weights. If `NULL` (the default), uniform weights (1) are
+#'  used.
 #' @param ... Currently not used.
 #' @return
 #'  A [`PCA-class`] object.
 #' @example inst/examples/ex-pca.R
-#' @seealso [`get_*()`][mutator], [stats::predict()], [svd()]
+#' @seealso [svd()]
 #' @references
 #'  Lebart, L., Piron, M. and Morineau, A. *Statistique exploratoire
 #'  multidimensionnelle: visualisation et inférence en fouille de données*.
@@ -309,42 +194,11 @@ NULL
 #' Partial Bootstrap Analysis
 #'
 #' Checks analysis with partial bootstrap resampling.
-#' @param object A [`numeric`] or an [`integer`] vector or
-#'  a [`CA-class`] or [`PCA-class`] object (see below).
-#' @param do A [`function`] that takes `object` as an argument
-#'  and returns a single numeric value.
+#' @param object A [`CA-class`] or [`PCA-class`] object.
 #' @param n A non-negative [`integer`] giving the number of bootstrap
 #'  replications.
-#' @param level A length-one [`numeric`] vector giving the confidence level.
-#'  Must be a single number between \eqn{0} and \eqn{1}. If `NULL`, no
-#'  confidence interval are computed.
-#' @param type A [`character`] string giving the type of confidence
-#'  interval to be returned. It must be one "`student`" (default) or
-#'  "`normal`". Any unambiguous substring can be given. Only used if `level`
-#'  is not `NULL`.``
-#' @param probs A [`numeric`] vector of probabilities with values in
-#'  \eqn{[0,1]} (see [stats::quantile()]). If `NULL`, quantiles are not
-#'  computed.
-#' @param na.rm A [`logical`] scalar: should missing values be removed
-#'  from `object` before the sample statistics are computed?
-#' @param ... Extra arguments passed to `do`.
-#' @return
-#'  If `object` is a [`numeric`] or an [`integer`] vector, `bootstrap()`
-#'  returns a `BootstrapVector` object (i.e. a `numeric` vector of the `n`
-#'  bootstrap values of `do`).
-#'
-#'  If `object` is a [`CA-class`] or a [`PCA-class`] object, `bootstrap()`
-#'  returns a [`BootstrapCA-class`] or a [`BootstrapPCA-class`] object.
-#'
-#'  `summary()` returns a `numeric` vector with the following elements:
-#'  \describe{
-#'   \item{`min`}{Minimum value.}
-#'   \item{`mean`}{Mean value.}
-#'   \item{`max`}{Maximum value.}
-#'   \item{`lower`}{Lower bound of the confidence interval.}
-#'   \item{`upper`}{Upper bound of the confidence interval.}
-#'   \item{`Q*`}{Sample quantile to `*` probability.}
-#'  }
+#' @return#'
+#'  Returns a [`BootstrapCA-class`] or a [`BootstrapPCA-class`] object.
 #' @param ... Currently not used.
 #' @example inst/examples/ex-bootstrap.R
 #' @references
@@ -368,87 +222,267 @@ setGeneric(
   def = function(object, ...) standardGeneric("bootstrap")
 )
 
-# Jackknife ====================================================================
-#' Jackknife Estimation
+# Results ======================================================================
+### Data -----------------------------------------------------------------------
+#' Get Original Data
 #'
-#' @param object A [`numeric`] vector.
-#' @param do A [`function`] that takes `object` as an argument and returns a
-#'  single numeric value.
-#' @param ... Extra arguments passed to `do`.
+#' @param x An object from which to get element(s) (a [`CA-class`] or
+#'  [`PCA-class`] object).
+#' @param ... Currently not used.
 #' @return
-#'  `jackknife()` returns a `JackknifeVector` object (i.e. a `numeric`
-#'  vector of the `n` leave-one-out values of `do`).
-#'
-#'  `summary()` returns a named `numeric` vector with the following elements:
-#'  \describe{
-#'   \item{`mean`}{The jackknife estimate of mean of `do`.}
-#'   \item{`bias`}{The jackknife estimate of bias of `do`.}
-#'   \item{`error`}{he jackknife estimate of standard error of `do`.}
-#'  }
-#' @example inst/examples/ex-jackknife.R
+#'  Returns a [`data.frame`] of original data.
 #' @author N. Frerebeau
 #' @docType methods
-#' @family resampling methods
-#' @name jackknife
-#' @rdname jackknife
+#' @family mutators
+#' @name get_data
+#' @rdname get_data
 NULL
 
-#' @rdname jackknife
-#' @aliases jackknife-method
+#' @rdname get_data
+#' @aliases get_data-method
 setGeneric(
-  name = "jackknife",
-  def = function(object, ...) standardGeneric("jackknife")
+  name = "get_data",
+  def = function(x, ...) standardGeneric("get_data"),
+  valueClass = "data.frame"
 )
 
-# Plot =========================================================================
 ## Coordinates -----------------------------------------------------------------
-#' Visualize Factor Map
+#' Get Coordinates
 #'
-#' Plots factor map.
-#' @param object,x A [`CA-class`] or [`PCA-class`] object.
+#' @param x An object from which to get element(s) (a [`CA-class`] or
+#'  [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
-#'  indicates variables/columns, `c(1, 2)` indicates rows and columns (`CA`).
+#'  indicates variables/columns.
+#' @param principal A [`logical`] scalar: should principal coordinates be
+#'  returned? If `FALSE`, standard coordinates are returned.
+#' @param sup_name A [`character`] string specifying the name of the column to
+#'  create for supplementary points attribution (see below).
+#' @param ... Currently not used.
+#' @return
+#'  * `get_coordinates()` returns a [`data.frame`] of coordinates. An extra
+#'    column (named after `sup_name`) is added specifying whether an observation
+#'    is a supplementary point or not.
+#'  * `get_replications()` returns an [`array`] of coordinates.
+#' @example inst/examples/ex-coordinates.R
+#' @author N. Frerebeau
+#' @docType methods
+#' @family mutators
+#' @name get_coordinates
+#' @rdname get_coordinates
+NULL
+
+#' @rdname get_coordinates
+#' @aliases get_coordinates-method
+setGeneric(
+  name = "get_coordinates",
+  def = function(x, ...) standardGeneric("get_coordinates"),
+  valueClass = "data.frame"
+)
+
+#' @rdname get_coordinates
+#' @aliases get_replications-method
+setGeneric(
+  name = "get_replications",
+  def = function(x, ...) standardGeneric("get_replications"),
+  valueClass = "array"
+)
+
+#' Wrap Observations
+#'
+#' @description
+#'  * `wrap_hull()` computes convex hull of a set of observations.
+#' @param x An object from which to wrap observations (a [`CA-class`] or
+#'  [`PCA-class`] object).
+#' @param margin A length-one [`numeric`] vector giving the subscript which the
+#'  data will be returned: `1` indicates individuals/rows (the default), `2`
+#'  indicates variables/columns.
+#' @param axes A length-two [`numeric`] vector giving the dimensions
+#'  to be for which to compute results.
+#' @param group A vector specifying the group an observation belongs to.
+#' @param ... Currently not used.
+#' @inheritParams ggplot2::layer
+#' @param na.rm A [`logical`] scalar: should missing values be silently removed?
+#'  If `FALSE` (the ), missing values are removed with a warning.
+#' @return
+#'  * `stat_hull()` return a [ggplot2::layer()].
+#'  * `wrap_hull()` return a [`data.frame`] of
+#'    envelope principal coordinates. An extra column named `group` is added
+#'    specifying the group an observation belongs to.
+#' @example inst/examples/ex-wrap.R
+#' @references
+#'  <https://ggplot2.tidyverse.org/articles/extending-ggplot2.html>
+#' @author N. Frerebeau
+#' @docType methods
+#' @family plot methods
+#' @name envelopes
+#' @rdname envelopes
+NULL
+
+#' @rdname envelopes
+#' @aliases wrap_hull-method
+setGeneric(
+  name = "wrap_hull",
+  def = function(x, ...) standardGeneric("wrap_hull"),
+  valueClass = "data.frame"
+)
+
+#' Tidy Coordinates
+#'
+#' @param x A [`CA-class`] or [`PCA-class`] object.
+#' @param margin A length-one [`numeric`] vector giving the subscript
+#'  which the data will be returned: `1` indicates individuals/rows (the
+#'  default), `2` indicates variables/columns.
+#' @param axes A length-two [`numeric`] vector giving the dimensions
+#'  to be for which to compute results.
+#' @param principal A [`logical`] scalar: should principal coordinates be
+#'  returned? If `FALSE`, standard coordinates are returned.
+#' @param ... Currently not used.
+#' @return
+#'  * `tidy()` returns a long [`data.frame`] with the following columns:
+#'    \describe{
+#'     \item{`label`}{Row/column names of the original data.}
+#'     \item{`component`}{Component.}
+#'     \item{`supplementary`}{Whether an observation is active or
+#'     supplementary.}
+#'     \item{`coordinate`}{Coordinates.}
+#'     \item{`contribution`}{Contributions to the definition of the components.}
+#'     \item{`cos2`}{\eqn{cos^2}{cos2}.}
+#'    }
+#'  * `augment()` returns a wide [`data.frame`] of the row/column coordinates
+#'    along `axes` and the following columns:
+#'    \describe{
+#'     \item{`label`}{Row/column names of the original data.}
+#'     \item{`supplementary`}{Whether an observation is active or
+#'     supplementary.}
+#'     \item{`mass`}{Weight/mass of each observation.}
+#'     \item{`sum`}{Sum of squared coordinates along `axes`.}
+#'     \item{`contribution`}{Joint contributions to the definition of `axes`.}
+#'     \item{`cos2`}{Joint \eqn{cos^2}{cos2} along `axes`.}
+#'    }
+#' @example inst/examples/ex-coordinates.R
+#' @author N. Frerebeau
+#' @docType methods
+#' @family tidy methods
+#' @name tidy
+#' @rdname tidy
+NULL
+
+#' @rdname tidy
+#' @aliases tidy-method
+setGeneric(
+  name = "tidy",
+  def = function(x, ...) standardGeneric("tidy"),
+  valueClass = "data.frame"
+)
+
+#' @rdname tidy
+#' @aliases augment-method
+setGeneric(
+  name = "augment",
+  def = function(x, ...) standardGeneric("augment"),
+  valueClass = "data.frame"
+)
+
+#' Biplot
+#'
+#' @param x A [`CA-class`] or [`PCA-class`] object.
+#' @param axes A length-two [`numeric`] vector giving the dimensions to be
+#'  plotted.
+#' @param type A [`character`] string specifying the biplot to be plotted
+#'  (see below). It must be one of "`rows`", "`columns`", "`contribution`" (CA),
+#'  "`form`" or "`covariance`" (PCA). Any unambiguous substring can be given.
+#' @param active A [`logical`] scalar: should the active observations be
+#'  plotted?
+#' @param sup A [`logical`] scalar: should the supplementary observations be
+#'  plotted?
+#' @param label A [`character`] vector specifying whether
+#'  "`rows`"/"`individuals`" and/or "`columns`"/"`variables`" names must be
+#'  mapped (e.g. for use with [ggrepel::geom_label_repel()]).
+#'  Any unambiguous substring can be given.
+#' @details
+#'  A biplot is the simultaneous representation of rows and columns of a
+#'  rectangular dataset. It is the generalization of a scatterplot to the case
+#'  of mutlivariate data: it allows to visualize as much information as possible
+#'  in a single graph (Greenacre 2010).
+#'
+#'  Biplots have the drawbacks of their advantages: they can quickly become
+#'  difficult to read as they display a lot of information at once. It may then
+#'  be preferable to visualize the results for individuals and variables
+#'  separately.
+#' @section PCA Biplots:
+#'  \describe{
+#'   \item{`form`}{Form biplot (row-metric-preserving). The form biplot favors
+#'   the representation of the individuals: the distance between the individuals
+#'   approximates the Euclidean distance between rows. In the form biplot the
+#'   length of a vector approximates the quality of the representation of the
+#'   variable.}
+#'   \item{`covariance`}{Covariance biplot (column-metric-preserving). The
+#'   covariance biplot favors the representation of the variables: the length of
+#'   a vector approximates the standard deviation of the variable and the cosine
+#'   of the angle formed by two vectors approximates the correlation between the
+#'   two variables. In the covariance biplot the distance between the
+#'   individuals approximates the Mahalanobis distance between rows.}
+#'  }
+#' @section CA Biplots:
+#'  \describe{
+#'   \item{`rows`}{Row principal biplot.}
+#'   \item{`columns`}{Column principal biplot.}
+#'   \item{`contribution`}{Contribution biplot}.
+#'  }
+#' @return
+#'  A [ggplot2::ggplot] object.
+#' @example inst/examples/ex-biplot.R
+#' @references
+#'  Aitchison, J. and Greenacre, M. (2002). Biplots of Compositional Data.
+#'  *Journal of the Royal Statistical Society: Series C (Applied Statistics)*,
+#'  51(4): 375-92. \doi{10.1111/1467-9876.00275}.
+#'
+#'  Greenacre, M. J. *Biplots in Practice*. Bilbao: Fundación BBVA, 2010.
+#' @author N. Frerebeau
+#' @docType methods
+#' @family plot methods
+#' @name biplot
+#' @rdname biplot
+NULL
+
+#' Visualize Factor Map
+#'
+#' Plots principal coordinates.
+#' @param object A [`CA-class`] or [`PCA-class`] object.
 #' @param axes A length-two [`numeric`] vector giving the dimensions to be
 #'  plotted.
 #' @param active A [`logical`] scalar: should the active observations be
 #'  plotted?
 #' @param sup A [`logical`] scalar: should the supplementary observations be
 #'  plotted?
-#' @param highlight A [`character`] string giving XXX.
-#'  It must be one of "`coordinates`", "`contributions`" or "`cos2`".
-#'  Any unambiguous substring can be given.
+#' @param alpha,colour,fill,linetype,shape,size A [`character`] string
+#'  specifying the information to be highlighted (will be mapped to the
+#'  corresponding aesthetic).
+#'  It must be one of "`observation`", "`mass`", "`sum`", "`contribution`",
+#'  "`cos2`" or "`group`" (see details). Any unambiguous substring can be given.
 #'  If `NULL` (the default), no highlighting is applied.
 #' @param group A vector of categories specifying the categorical variable from
-#'  which to color the individuals (only used if `highlight` is `NULL`; see
-#'  below).
+#'  which to highlight the individuals (only used if at least one of `colour`,
+#'  `fill`, `linetype` or `shape` is set to `group`; see details).
 #' @param ... Currently not used.
-#' @section Aesthetic:
-#'  Point shapes and line types are set whether an observation is a
-#'  row/individual or a column/variable and is active or supplementary.
-#'
-#'  Colors are set according to `highlight` and `group`:
-#'  \itemize{
-#'   \item{If `highlight` is not `NULL`, the color gradient will vary according
-#'   to the value of the selected parameter.}
-#'   \item{If `group` is a `numeric` vector, the color gradient and size will
-#'   vary by the value of `group`.}
-#'   \item{If `group` is not a `numeric` vector, the colors will be mapped to
-#'   the levels of `group`.}
-#'   \item{If both are `NULL` (the default), then the same rule as for shapes is
-#'   used.}
+#' @details
+#'  \describe{
+#'   \item{`observation`}{Whether an observation is active or supplementary.}
+#'   \item{`mass`}{Weight/mass of each observation.}
+#'   \item{`sum`}{Sum of squared coordinates along `axes`.}
+#'   \item{`contribution`}{Joint contributions to the definition of `axes`.}
+#'   \item{`cos2`}{Joint \eqn{cos^2}{cos2} along `axes`.}
 #'  }
-#' @seealso [ggplot2::ggplot()]
+#' @return
+#'  A [ggplot2::ggplot] object.
 #' @example inst/examples/ex-plot.R
 #' @author N. Frerebeau
 #' @docType methods
-#' @family plot
+#' @family plot methods
 #' @name plot_coordinates
 #' @rdname plot_coordinates
 NULL
-
-if (!isGeneric("plot"))
-  setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 #' @rdname plot_coordinates
 #' @aliases plot_rows-method
@@ -464,7 +498,69 @@ setGeneric(
   def = function(object, ...) standardGeneric("plot_columns")
 )
 
+#' @rdname plot_coordinates
+#' @aliases plot_individuals-method
+setGeneric(
+  name = "plot_individuals",
+  def = function(object, ...) standardGeneric("plot_individuals")
+)
+
+#' @rdname plot_coordinates
+#' @aliases plot_variables-method
+setGeneric(
+  name = "plot_variables",
+  def = function(object, ...) standardGeneric("plot_variables")
+)
+
 ## Eigenvalues -----------------------------------------------------------------
+#' Get Eigenvalues
+#'
+#' @param x An object from which to get element(s) (a [`CA-class`] or
+#'  [`PCA-class`] object).
+#' @param margin A length-one [`numeric`] vector giving the subscript which the
+#'  data will be returned: `1` indicates individuals/rows (the default), `2`
+#'  indicates variables/columns.
+#' @param digits An [`integer`] indicating the number of decimal places to be
+#'  used.
+#' @param ... Currently not used.
+#' @return
+#'  * `get_eigenvalues()` returns a [`data.frame`] with the following columns:
+#'    `eigenvalues`, `variance` (percentage of variance) and `cumulative`
+#'    (cumulative percentage of variance).
+#'  * `get_variance()` returns a [`numeric`] vector giving the percentage of
+#'    explained variance of each dimension.
+#'  * `get_inertia()` returns a [`numeric`] vector.
+#' @author N. Frerebeau
+#' @docType methods
+#' @family mutators
+#' @name get_eigenvalues
+#' @rdname get_eigenvalues
+NULL
+
+#' @rdname get_eigenvalues
+#' @aliases get_eigenvalues-method
+setGeneric(
+  name = "get_eigenvalues",
+  def = function(x) standardGeneric("get_eigenvalues"),
+  valueClass = "data.frame"
+)
+
+#' @rdname get_eigenvalues
+#' @aliases get_inertia-method
+setGeneric(
+  name = "get_inertia",
+  def = function(x, ...) standardGeneric("get_inertia"),
+  valueClass = "numeric"
+)
+
+#' @rdname get_eigenvalues
+#' @aliases get_variance-method
+setGeneric(
+  name = "get_variance",
+  def = function(x, ...) standardGeneric("get_variance"),
+  valueClass = "numeric"
+)
+
 #' Visualize Eigenvalues
 #'
 #' Plot eigenvalues or variances histogram.
@@ -475,13 +571,14 @@ setGeneric(
 #'  variance be plotted?
 #' @param fill,border A [`character`] string specifying the bars infilling and
 #'  border colors.
-#' @param color A [`character`] string specifying the line color.
+#' @param colour A [`character`] string specifying the line color.
 #' @param ... Currently not used.
-#' @seealso [ggplot2::ggplot()]
+#' @return
+#'  A [ggplot2::ggplot] object.
 #' @example inst/examples/ex-plot.R
 #' @author N. Frerebeau
 #' @docType methods
-#' @family plot
+#' @family plot methods
 #' @name plot_eigenvalues
 #' @rdname plot_eigenvalues
 NULL
@@ -494,6 +591,58 @@ setGeneric(
 )
 
 ## Contributions ---------------------------------------------------------------
+#' Get Contributions
+#'
+#' @param x An object from which to get element(s) (a [`CA-class`] or
+#'  [`PCA-class`] object).
+#' @param margin A length-one [`numeric`] vector giving the subscript which the
+#'  data will be returned: `1` indicates individuals/rows (the default), `2`
+#'  indicates variables/columns.
+#' @param sup_name A [`character`] string specifying the name of the column to
+#'  create for supplementary points attribution (see below).
+#' @param ... Currently not used.
+#' @return
+#'  * `get_contributions()` returns a [`data.frame`] of contributions to the
+#'    definition of the principal dimensions.
+#'  * `get_correlations()` returns a [`data.frame`] of correlations between
+#'    variables and dimensions (`PCA`). An extra column (named after `sup_name`)
+#'    is added specifying whether an observation is a supplementary point or
+#'    not.
+#'  * `get_cos2()` returns a [`data.frame`] of \eqn{cos^2}{cos2} values (i.e.
+#'    quality of the representation of the points on the factor map). An extra
+#'    column (named after `sup_name`) is added specifying whether an observation
+#'    is a supplementary point or not.
+#' @author N. Frerebeau
+#' @docType methods
+#' @family mutators
+#' @name get_contributions
+#' @rdname get_contributions
+NULL
+
+#' @rdname get_contributions
+#' @aliases get_contributions-method
+setGeneric(
+  name = "get_contributions",
+  def = function(x, ...) standardGeneric("get_contributions"),
+  valueClass = "data.frame"
+)
+
+#' @rdname get_contributions
+#' @aliases get_correlations-method
+setGeneric(
+  name = "get_correlations",
+  def = function(x, ...) standardGeneric("get_correlations"),
+  valueClass = "data.frame"
+)
+
+#' @rdname get_contributions
+#' @aliases get_cos2-method
+setGeneric(
+  name = "get_cos2",
+  def = function(x, ...) standardGeneric("get_cos2"),
+  valueClass = "data.frame"
+)
+
 #' Visualize Contributions and cos2
 #'
 #' Plots contributions histogram and \eqn{cos^2}{cos2} scatterplot.
@@ -515,11 +664,12 @@ setGeneric(
 #' @param fill,border A [`character`] string specifying the bars infilling and
 #'  border colors.
 #' @param ... Currently not used.
-#' @seealso [ggplot2::ggplot()]
+#' @return
+#'  A [ggplot2::ggplot] object.
 #' @example inst/examples/ex-plot.R
 #' @author N. Frerebeau
 #' @docType methods
-#' @family plot
+#' @family plot methods
 #' @name plot_contributions
 #' @rdname plot_contributions
 NULL
@@ -536,6 +686,33 @@ setGeneric(
 setGeneric(
   name = "plot_cos2",
   def = function(object, ...) standardGeneric("plot_cos2")
+)
+
+## Distances -------------------------------------------------------------------
+#' Get Distances
+#'
+#' @param x An object from which to get element(s) (a [`CA-class`] or
+#'  [`PCA-class`] object).
+#' @param margin A length-one [`numeric`] vector giving the subscript which the
+#'  data will be returned: `1` indicates individuals/rows (the default), `2`
+#'  indicates variables/columns.
+#' @param ... Currently not used.
+#' @return
+#'  * `get_distances()` returns a [`numeric`] vector of squared distance to
+#'  the centroide.
+#' @author N. Frerebeau
+#' @docType methods
+#' @family mutators
+#' @name get_distances
+#' @rdname get_distances
+NULL
+
+#' @rdname get_distances
+#' @aliases get_distances-method
+setGeneric(
+  name = "get_distances",
+  def = function(x, ...) standardGeneric("get_distances"),
+  valueClass = "numeric"
 )
 
 # Summarize ====================================================================

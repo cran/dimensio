@@ -3,6 +3,18 @@
 NULL
 
 # Non exported =================================================================
+get_masses <- function(x, margin = 1) {
+  margin <- margin[[1L]]
+  if (margin == 1) mass <- x@rows@weights
+  if (margin == 2) mass <- x@columns@weights
+  mass
+}
+has_supplementary <- function(x, margin = 1) {
+  margin <- margin[[1L]]
+  if (margin == 1) supp <- any(x@rows@supplement)
+  if (margin == 2) supp <- any(x@columns@supplement)
+  supp
+}
 has_groups <- function(x, margin = 1) {
   margin <- margin[[1L]]
   if (margin == 1) grp <- length(x@rows@groups) > 0
@@ -10,16 +22,16 @@ has_groups <- function(x, margin = 1) {
   grp
 }
 get_groups <- function(x, margin = 1) {
-  grp1 <- grp2 <- NULL
-  if (any(margin == 1)) grp1 <- x@rows@groups
-  if (any(margin == 2)) grp2 <- x@columns@groups
-  list(rows = grp1, columns = grp2)
+  margin <- margin[[1L]]
+  if (margin == 1) grp <- x@rows@groups
+  if (margin == 2) grp <- x@columns@groups
+  grp
 }
 get_order <- function(x, margin = 1) {
-  ord1 <- ord2 <- NULL
-  if (margin == 1) ord1 <- x@rows@order
-  if (margin == 2) ord2 <- x@columns@order
-  list(rows = ord1, columns = ord2)
+  margin <- margin[[1L]]
+  if (margin == 1) ord <- x@rows@order
+  if (margin == 2) ord <- x@columns@order
+  ord
 }
 is_centered <- function(x) {
   !all(x@center == 0)
@@ -30,44 +42,52 @@ is_scaled <- function(x) {
 
 # Dimensions ===================================================================
 #' @export
-#' @rdname mutator
+#' @method dim MultivariateAnalysis
+dim.MultivariateAnalysis <- function(x) {
+  x@dimension
+}
+
+#' @export
+#' @rdname mutators
 #' @aliases dim,MultivariateAnalysis-method
-setMethod(
-  f = "dim",
-  signature = signature(x = "MultivariateAnalysis"),
-  definition = function(x) x@dimension
-)
+setMethod("dim", "MultivariateAnalysis", dim.MultivariateAnalysis)
 
 #' @export
-#' @rdname mutator
+#' @method rownames MultivariateAnalysis
+rownames.MultivariateAnalysis <- function(x) {
+  x@rows@names
+}
+
+#' @export
+#' @rdname mutators
 #' @aliases rownames,MultivariateAnalysis-method
-setMethod(
-  f = "rownames",
-  signature = signature(x = "MultivariateAnalysis"),
-  definition = function(x) x@rows@names
-)
+setMethod("rownames", "MultivariateAnalysis", rownames.MultivariateAnalysis)
 
 #' @export
-#' @rdname mutator
+#' @method colnames MultivariateAnalysis
+colnames.MultivariateAnalysis <- function(x) {
+  x@columns@names
+}
+
+#' @export
+#' @rdname mutators
 #' @aliases colnames,MultivariateAnalysis-method
-setMethod(
-  f = "colnames",
-  signature = signature(x = "MultivariateAnalysis"),
-  definition = function(x) x@columns@names
-)
+setMethod("colnames", "MultivariateAnalysis", colnames.MultivariateAnalysis)
 
 #' @export
-#' @rdname mutator
+#' @method dimnames MultivariateAnalysis
+dimnames.MultivariateAnalysis <- function(x) {
+  list(x@rows@names, x@columns@names)
+}
+
+#' @export
+#' @rdname mutators
 #' @aliases dimnames,MultivariateAnalysis-method
-setMethod(
-  f = "dimnames",
-  signature = signature(x = "MultivariateAnalysis"),
-  definition = function(x) list(x@rows@names, x@columns@names)
-)
+setMethod("dimnames", "MultivariateAnalysis", dimnames.MultivariateAnalysis)
 
 # Contributions ================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_contributions
 #' @aliases get_contributions,MultivariateAnalysis-method
 setMethod(
   f = "get_contributions",
@@ -83,33 +103,33 @@ setMethod(
 
 # Coordinates ==================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_coordinates
 #' @aliases get_coordinates,MultivariateAnalysis-method
 setMethod(
   f = "get_coordinates",
   signature = signature(x = "MultivariateAnalysis"),
-  definition = function(x, margin = 1, sup_name = ".sup") {
+  definition = function(x, margin = 1, principal = TRUE, sup_name = ".sup") {
     margin <- margin[[1L]]
     if (margin == 1) {
-      coords <- x@rows@principal
+      coords <- if (principal) x@rows@principal else x@rows@standard
       suppl <- x@rows@supplement
       id <- x@rows@names
     }
     if (margin == 2) {
-      coords <- x@columns@principal
+      coords <- if (principal) x@columns@principal else x@columns@standard
       suppl <- x@columns@supplement
       id <- x@columns@names
     }
 
     coords <- as.data.frame(coords, row.names = id)
-    coords[[sup_name]] <- suppl
+    coords[[sup_name]] <- if (principal) suppl else suppl[!suppl]
 
     coords
   }
 )
 
 #' @export
-#' @rdname mutator
+#' @rdname get_coordinates
 #' @aliases get_replications,MultivariateBootstrap-method
 setMethod(
   f = "get_replications",
@@ -132,7 +152,7 @@ setMethod(
 )
 
 #' @export
-#' @rdname mutator
+#' @rdname get_coordinates
 #' @aliases get_replications,BootstrapPCA-method
 setMethod(
   f = "get_replications",
@@ -144,7 +164,7 @@ setMethod(
 
 # Correlations =================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_contributions
 #' @aliases get_correlations,PCA-method
 setMethod(
   f = "get_correlations",
@@ -162,7 +182,7 @@ setMethod(
 
 # Cos2 =========================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_contributions
 #' @aliases get_cos2,MultivariateAnalysis-method
 setMethod(
   f = "get_cos2",
@@ -188,7 +208,7 @@ setMethod(
 
 # Data =========================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_data
 #' @aliases get_data,MultivariateAnalysis-method
 setMethod(
   f = "get_data",
@@ -200,7 +220,7 @@ setMethod(
 
 # Distances ====================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_distances
 #' @aliases get_distances,MultivariateAnalysis-method
 setMethod(
   f = "get_distances",
@@ -225,7 +245,7 @@ setMethod(
 
 # Eigenvalues ==================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_eigenvalues
 #' @aliases get_eigenvalues,MultivariateAnalysis-method
 setMethod(
   f = "get_eigenvalues",
@@ -245,7 +265,7 @@ setMethod(
 
 # Inertia ======================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_eigenvalues
 #' @aliases get_inertia,MultivariateAnalysis-method
 setMethod(
   f = "get_inertia",
@@ -272,7 +292,7 @@ setMethod(
 
 # Variance =====================================================================
 #' @export
-#' @rdname mutator
+#' @rdname get_eigenvalues
 #' @aliases get_variance,MultivariateAnalysis-method
 setMethod(
   f = "get_variance",
