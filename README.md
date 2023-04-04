@@ -6,8 +6,9 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/tesselle/dimensio/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/dimensio/actions)
-[![codecov](https://codecov.io/gh/tesselle/dimensio/branch/main/graph/badge.svg)](https://app.codecov.io/gh/tesselle/dimensio)
+[![codecov](https://codecov.io/gh/tesselle/dimensio/branch/main/graph/badge.svg?token=0mcb7gbZu3)](https://app.codecov.io/gh/tesselle/dimensio)
 [![CodeFactor](https://www.codefactor.io/repository/github/tesselle/dimensio/badge/main)](https://www.codefactor.io/repository/github/tesselle/dimensio/overview/main)
+[![Dependencies](https://tinyverse.netlify.com/badge/dimensio)](https://cran.r-project.org/package=dimensio)
 
 <a href="https://tesselle.r-universe.dev" class="pkgdown-devel"><img
 src="https://tesselle.r-universe.dev/badges/dimensio"
@@ -18,7 +19,7 @@ src="http://www.r-pkg.org/badges/version/dimensio"
 alt="CRAN Version" /></a> <a
 href="https://cran.r-project.org/web/checks/check_results_dimensio.html"
 class="pkgdown-release"><img
-src="https://cranchecks.info/badges/worst/dimensio"
+src="https://badges.cranchecks.info/worst/dimensio.svg"
 alt="CRAN checks" /></a>
 <a href="https://cran.r-project.org/package=dimensio"
 class="pkgdown-release"><img
@@ -48,6 +49,30 @@ as [**FactoMineR**](http://factominer.free.fr/),
 [**FactoExtra**](https://rpkgs.datanovia.com/factoextra/)). **dimensio**
 is designed to be as simple as possible, providing all the necessary
 tools to explore the results of the analysis.
+
+
+    To cite dimensio in publications use:
+
+      Frerebeau N (2023). _dimensio: Multivariate Data Analysis_.
+      Université Bordeaux Montaigne, Pessac, France.
+      doi:10.5281/zenodo.4478530 <https://doi.org/10.5281/zenodo.4478530>,
+      R package version 0.3.1, <https://packages.tesselle.org/dimensio/>.
+
+    Une entrée BibTeX pour les utilisateurs LaTeX est
+
+      @Manual{,
+        author = {Nicolas Frerebeau},
+        title = {{dimensio: Multivariate Data Analysis}},
+        year = {2023},
+        organization = {Université Bordeaux Montaigne},
+        address = {Pessac, France},
+        note = {R package version 0.3.1},
+        doi = {10.5281/zenodo.4478530},
+        url = {https://packages.tesselle.org/dimensio/},
+      }
+
+    This package is a part of the tesselle project
+    <https://www.tesselle.org>.
 
 ## Installation
 
@@ -92,30 +117,30 @@ X <- pca(iris, center = TRUE, scale = TRUE)
 
 **dimensio** provides several methods to extract the results:
 
--   `get_data()` returns the original data.
--   `get_contributions()` returns the contributions to the definition of
-    the principal dimensions.
--   `get_coordinates()` returns the principal or standard coordinates.
--   `get_correlations()` returns the correlations between variables and
-    dimensions.
--   `get_cos2()` returns the cos<sup>2</sup> values (i.e. the quality of
-    the representation of the points on the factor map).
--   `get_eigenvalues()` returns the eigenvalues, the percentages of
-    variance and the cumulative percentages of variance.
+- `get_data()` returns the original data.
+- `get_contributions()` returns the contributions to the definition of
+  the principal dimensions.
+- `get_coordinates()` returns the principal or standard coordinates.
+- `get_correlations()` returns the correlations between variables and
+  dimensions.
+- `get_cos2()` returns the cos<sup>2</sup> values (i.e. the quality of
+  the representation of the points on the factor map).
+- `get_eigenvalues()` returns the eigenvalues, the percentages of
+  variance and the cumulative percentages of variance.
 
 ### Visualize
 
 The package allows to quickly visualize the results:
 
--   `plot_rows()`/`plot_individuals()` displays row/individual principal
-    coordinates.
--   `plot_columns()`/`plot_variables()` displays columns/variable
-    principal coordinates. `plot_variables()` depicts the variables by
-    rays emanating from the origin (both their lengths and directions
-    are important to the interpretation).
--   `plot_contributions()` displays (joint) contributions.
--   `plot_cos2()` displays (joint) cos<sup>2</sup>.
--   `plot_variance()` produces a scree plot.
+- `plot_rows()`/`plot_individuals()` displays row/individual principal
+  coordinates.
+- `plot_columns()`/`plot_variables()` displays columns/variable
+  principal coordinates. `plot_variables()` depicts the variables by
+  rays emanating from the origin (both their lengths and directions are
+  important to the interpretation).
+- `plot_contributions()` displays (joint) contributions.
+- `plot_cos2()` displays (joint) cos<sup>2</sup>.
+- `plot_variance()` produces a scree plot.
 
 **dimensio** uses [**ggplot2**](https://github.com/tidyverse/ggplot2)
 for plotting informations. Visualization methods produce graphics with
@@ -141,6 +166,11 @@ plot_individuals(X, colour = "group", group = iris$Species) +
   ggplot2::stat_ellipse() + # Add ellipses
   ggplot2::theme_bw() + # Change theme
   khroma::scale_colour_highcontrast() # Custom color scale
+#> Warning: The following aesthetics were dropped during statistical transformation: label
+#> ℹ This can happen when ggplot fails to infer the correct grouping structure in
+#>   the data.
+#> ℹ Did you forget to specify a `group` aesthetic or to convert a numerical
+#>   variable into a factor?
 
 ## Highlight petal length
 plot_individuals(X, colour = "group", size = "group", group = iris$Petal.Length) +

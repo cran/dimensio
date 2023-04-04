@@ -1,3 +1,7 @@
+# dimensio 0.3.1
+## Bugfixes & changes
+* Fix `rownames()` and `colnames()` for S3 generic/method consistency.
+
 # dimensio 0.3.0
 ## New classes and methods
 * Add `biplot()` to produce PCA and CA biplots.

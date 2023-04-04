@@ -1,6 +1,6 @@
 Package: dimensio
 Title: Multivariate Data Analysis
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     c(person(given = "Nicolas",
              family = "Frerebeau",
@@ -11,7 +11,7 @@ Authors@R:
       person(given = "Jean-Baptiste",
              family = "Fourvel",
              role = "ctb",
-             email = "fourvel@mmsh.univ-aix.fr",
+             email = "jean-baptiste.fourvel@univ-amu.fr",
              comment = c(ORCID = "0000-0002-1061-4642", 
                          affiliation = "CNRS")),
       person(given = "Brice",
@@ -39,14 +39,14 @@ Suggests: covr, FactoMineR, ggrepel, khroma, testthat (>= 3.0.0),
         vdiffr (>= 1.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Collate: 'AllClasses.R' 'AllGenerics.R' 'bootstrap.R' 'ca.R' 'data.R'
         'dimensio-package.R' 'ggplot2.R' 'helpers.R' 'mutators.R'
         'pca.R' 'plot.R' 'show.R' 'subset.R' 'summary.R' 'svd.R'
         'tidy.R' 'wrap.R' 'zzz.R'
 LazyData: true
 NeedsCompilation: no
-Packaged: 2022-08-15 14:16:44 UTC; nicolas
+Packaged: 2023-04-04 09:35:56 UTC; nicolas
 Author: Nicolas Frerebeau [aut, cre] (<https://orcid.org/0000-0001-5759-4944>,
     Université Bordeaux Montaigne),
   Jean-Baptiste Fourvel [ctb] (<https://orcid.org/0000-0002-1061-4642>,
@@ -54,4 +54,4 @@ Author: Nicolas Frerebeau [aut, cre] (<https://orcid.org/0000-0001-5759-4944>,
   Brice Lebrun [ctb] (<https://orcid.org/0000-0001-7503-8685>, Université
     Bordeaux Montaigne)
 Repository: CRAN
-Date/Publication: 2022-08-15 14:50:05 UTC
+Date/Publication: 2023-04-04 10:00:02 UTC
