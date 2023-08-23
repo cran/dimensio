@@ -2,18 +2,35 @@
 data("iris")
 
 ## Compute principal components analysis
-Y <- pca(iris, scale = TRUE)
+X <- pca(iris, scale = TRUE)
 
-## Plot results
-plot_individuals(Y, colour = "group", shape = "group", group = iris$Species) +
-  khroma::scale_colour_highcontrast()
+## Plot individuals
+viz_individuals(X, panel.last = graphics::grid())
 
-plot_individuals(Y, colour = "group", size = "cos2", group = iris$Sepal.Width) +
-  khroma::scale_color_YlOrBr()
+## Plot variables
+viz_variables(X, panel.last = graphics::grid())
 
-plot_individuals(Y, colour = "contribution", size = "contribution") +
-  khroma::scale_color_iridescent(range = c(0.5, 1))
+## Graphical parameters
+## Continuous values
+viz_individuals(X, highlight = iris$Petal.Length, pch = 16)
+viz_individuals(X, highlight = iris$Petal.Length, pch = 16,
+                col = grDevices::hcl.colors(12, "RdPu"))
+viz_individuals(X, highlight = iris$Petal.Length, pch = 16,
+                col = grDevices::hcl.colors(12, "RdPu"),
+                cex = c(1, 2))
 
-plot_variables(Y, colour = "contribution") +
-  ggrepel::geom_label_repel() +
-  khroma::scale_color_YlOrBr(range = c(0.5, 1))
+viz_variables(X, highlight = "contribution",
+              col = grDevices::hcl.colors(12, "BluGrn", rev = TRUE),
+              lwd = c(1, 5))
+
+## Discrete values
+viz_individuals(X, highlight = iris$Species, pch = 21:23)
+viz_individuals(X, highlight = iris$Species, pch = 21:23,
+                bg = c("#004488", "#DDAA33", "#BB5566"),
+                col = "black")
+
+viz_variables(X, highlight = c("Petal", "Petal", "Sepal", "Sepal"),
+              col = c("#EE7733", "#0077BB"),
+              lty = c(1, 3))
+
+
