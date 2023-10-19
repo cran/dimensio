@@ -8,13 +8,12 @@ NULL
 #' @aliases screeplot,MultivariateAnalysis-method
 setMethod(
   f = "screeplot",
-  signature = signature(x = "MultivariateAnalysis"),
-  definition = function(x, eigenvalues = FALSE, cumulative = FALSE,
+  signature = c(x = "MultivariateAnalysis"),
+  definition = function(x, ..., eigenvalues = FALSE, cumulative = FALSE,
                         labels = TRUE, limit = 10,
                         col = "grey90", border = "grey10",
                         col.cumulative = "red", lty.cumulative = "solid",
-                        lwd.cumulative = 2,
-                        ...) {
+                        lwd.cumulative = 2) {
     ## TODO
     horiz <- FALSE
 

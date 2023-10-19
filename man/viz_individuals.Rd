@@ -17,32 +17,38 @@ viz_rows(x, ...)
 
 \S4method{viz_rows}{MultivariateAnalysis}(
   x,
+  ...,
   axes = c(1, 2),
   active = TRUE,
   sup = TRUE,
   labels = FALSE,
   highlight = NULL,
+  xlim = NULL,
+  ylim = NULL,
   main = NULL,
   sub = NULL,
   panel.first = NULL,
   panel.last = NULL,
-  ...
+  legend = list(x = "topleft")
 )
 
-\S4method{viz_rows}{BootstrapCA}(x, axes = c(1, 2), ...)
+\S4method{viz_rows}{BootstrapCA}(x, ..., axes = c(1, 2))
 
 \S4method{viz_individuals}{PCA}(
   x,
+  ...,
   axes = c(1, 2),
   active = TRUE,
   sup = TRUE,
   labels = FALSE,
   highlight = NULL,
+  xlim = NULL,
+  ylim = NULL,
   main = NULL,
   sub = NULL,
   panel.first = NULL,
   panel.last = NULL,
-  ...
+  legend = list(x = "topleft")
 )
 }
 \arguments{
@@ -69,6 +75,14 @@ If a single \code{character} string is passed, it must be one of "\code{observat
 "\code{mass}", "\code{sum}", "\code{contribution}" or "\code{cos2}" (see \code{\link[=augment]{augment()}}).
 Any unambiguous substring can be given.}
 
+\item{xlim}{A length-two \code{\link{numeric}} vector giving the x limits of the plot.
+The default value, \code{NULL}, indicates that the range of the
+\link[=is.finite]{finite} values to be plotted should be used.}
+
+\item{ylim}{A length-two \code{\link{numeric}} vector giving the y limits of the plot.
+The default value, \code{NULL}, indicates that the range of the
+\link[=is.finite]{finite} values to be plotted should be used.}
+
 \item{main}{A \code{\link{character}} string giving a main title for the plot.}
 
 \item{sub}{A \code{\link{character}} string giving a subtitle for the plot.}
@@ -79,6 +93,10 @@ background grids.}
 
 \item{panel.last}{An \code{expression} to be evaluated after plotting has taken
 place but before the axes, title and box are added.}
+
+\item{legend}{A \code{\link{list}} of additional arguments to be passed to
+\code{\link[graphics:legend]{graphics::legend()}}; names of the list are used as argument names.
+If \code{NULL}, no legend is displayed.}
 }
 \value{
 \verb{viz_*()} is called for its side-effects: it results in a graphic

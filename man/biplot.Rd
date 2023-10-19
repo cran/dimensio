@@ -9,6 +9,7 @@
 \usage{
 \S4method{biplot}{CA}(
   x,
+  ...,
   axes = c(1, 2),
   type = c("rows", "columns", "contributions"),
   active = TRUE,
@@ -20,13 +21,15 @@
   cex.columns = graphics::par("cex"),
   pch.rows = 16,
   pch.columns = 17,
+  xlim = NULL,
+  ylim = NULL,
   main = NULL,
-  sub = NULL,
-  ...
+  sub = NULL
 )
 
 \S4method{biplot}{PCA}(
   x,
+  ...,
   axes = c(1, 2),
   type = c("form", "covariance"),
   active = TRUE,
@@ -38,13 +41,16 @@
   pch.columns = 17,
   lty = "solid",
   lwd = 2,
+  xlim = NULL,
+  ylim = NULL,
   main = NULL,
-  sub = NULL,
-  ...
+  sub = NULL
 )
 }
 \arguments{
 \item{x}{A \code{\linkS4class{CA}} or \code{\linkS4class{PCA}} object.}
+
+\item{...}{Currently not used.}
 
 \item{axes}{A length-two \code{\link{numeric}} vector giving the dimensions to be
 plotted.}
@@ -70,11 +76,17 @@ plotting characters and symbols should be scaled relative to the default.}
 
 \item{pch.rows, pch.columns}{A symbol specification.}
 
+\item{xlim}{A length-two \code{\link{numeric}} vector giving the x limits of the plot.
+The default value, \code{NULL}, indicates that the range of the
+\link[=is.finite]{finite} values to be plotted should be used.}
+
+\item{ylim}{A length-two \code{\link{numeric}} vector giving the y limits of the plot.
+The default value, \code{NULL}, indicates that the range of the
+\link[=is.finite]{finite} values to be plotted should be used.}
+
 \item{main}{A \code{\link{character}} string giving a main title for the plot.}
 
 \item{sub}{A \code{\link{character}} string giving a subtitle for the plot.}
-
-\item{...}{Further parameters to be passed to \code{\link[wordcloud:wordlayout]{wordcloud::wordlayout()}}.}
 
 \item{lty, lwd}{A specification for the line type and width.}
 }

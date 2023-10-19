@@ -44,7 +44,8 @@ viz_variables(X)
 viz_variables(
   x = X, 
   highlight = "cos2", 
-  col = khroma::color("YlOrBr")(4, range = c(0.5, 1))
+  col = khroma::color("YlOrBr")(4, range = c(0.5, 1)),
+  legend = list(x = "bottomleft")
 )
 
 ## ----plot-ind-species---------------------------------------------------------
@@ -53,7 +54,8 @@ viz_individuals(
   x = X,
   highlight = iris$Species,
   col = khroma::color("bright")(3), # Custom color scale
-  pch = c(15, 16, 17) # Custom symbols
+  pch = c(15, 16, 17), # Custom symbols
+  legend = list(x = "bottomright")
 )
 
 ## ----plot-wrap, fig.show='hold', out.width='50%'------------------------------
@@ -74,7 +76,8 @@ viz_individuals(
   highlight = iris$Petal.Length,
   col = khroma::color("YlOrBr")(12), # Custom color scale
   cex = c(1, 2), # Custom size scale
-  pch = 16
+  pch = 16,
+  legend = list(x = "bottomleft")
 )
 
 ## ----plot-ind-contrib---------------------------------------------------------
@@ -84,7 +87,8 @@ viz_individuals(
   highlight = "contrib",
   col = khroma::color("iridescent")(12), # Custom color scale
   cex = c(1, 2), # Custom size scale
-  pch = 16
+  pch = 16,
+  legend = list(x = "bottomleft")
 )
 
 ## ----tidy---------------------------------------------------------------------
