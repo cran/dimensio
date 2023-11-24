@@ -9,6 +9,8 @@ setGeneric("dimnames")
 setGeneric("loadings")
 setGeneric("biplot")
 
+setGeneric("bootstrap", package = "arkhe")
+
 # Extract ======================================================================
 ## Get -------------------------------------------------------------------------
 #' Extract Loadings
@@ -104,10 +106,8 @@ NULL
 #' @param rank An [`integer`] value specifying the maximal number of
 #'  components to be kept in the results. If `NULL` (the default),
 #'  \eqn{min(m, p) - 1} components will be returned.
-#' @param sup_row A [`numeric`] or [`logical`] vector specifying the indices of
-#'  the supplementary rows.
-#' @param sup_col A [`numeric`] or [`logical`] vector specifying the indices of
-#'  the supplementary columns.
+#' @param sup_row A `vector` specifying the indices of the supplementary rows.
+#' @param sup_col A `vector` specifying the indices of the supplementary columns.
 #' @param ... Currently not used.
 #' @return
 #'  A [`CA-class`] object.
@@ -133,6 +133,39 @@ setGeneric(
   valueClass = "CA"
 )
 
+# MCA ==========================================================================
+#' Multiple Correspondence Analysis
+#'
+#' Computes a multiple correspondence analysis.
+#' @param object A \eqn{m \times p}{m x p} numeric [`matrix`] or a
+#'  [`data.frame`].
+#' @param rank An [`integer`] value specifying the maximal number of
+#'  components to be kept in the results. If `NULL` (the default),
+#'  \eqn{min(m, p) - 1} components will be returned.
+#' @param sup_row A `vector` specifying the indices of the supplementary rows.
+#' @param sup_col A `vector` specifying the indices of the supplementary
+#'  categorical columns.
+#' @param sup_quanti A `vector` specifying the indices of the supplementary
+#'  quantitative columns.
+#' @param ... Currently not used.
+#' @return
+#'  A [`MCA-class`] object.
+# @example inst/examples/ex-mca.R
+#' @seealso [svd()], [cdt()]
+#' @references
+#'  Lebart, L., Piron, M. and Morineau, A. *Statistique exploratoire
+#'  multidimensionnelle: visualisation et inférence en fouille de données*.
+#'  Paris: Dunod, 2006.
+#' @author N. Frerebeau
+#' @docType methods
+#' @family multivariate analysis
+#' @aliases mca-method
+setGeneric(
+  name = "mca",
+  def = function(object, ...) standardGeneric("mca"),
+  valueClass = "MCA"
+)
+
 # PCA ==========================================================================
 #' Principal Components Analysis
 #'
@@ -147,10 +180,8 @@ setGeneric(
 #' @param rank An [`integer`] value specifying the maximal number of components
 #'  to be kept in the results. If `NULL` (the default), \eqn{p - 1} components
 #'  will be returned.
-#' @param sup_row A [`numeric`] or [`logical`] vector specifying the indices of
-#'  the supplementary rows (individuals).
-#' @param sup_col A [`numeric`] or [`logical`] vector specifying the indices of
-#'  the supplementary columns (variables).
+#' @param sup_row A `vector` specifying the indices of the supplementary rows.
+#' @param sup_col A `vector` specifying the indices of the supplementary columns.
 #' @param weight_row A [`numeric`] vector specifying the active row (individual)
 #'  weights. If `NULL` (the default), uniform weights are used. Row weights are
 #'  internally normalized to sum 1
@@ -203,9 +234,8 @@ NULL
 #' @param object A [`CA-class`] or [`PCA-class`] object.
 #' @param n A non-negative [`integer`] giving the number of bootstrap
 #'  replications.
-#' @return#'
+#' @return
 #'  Returns a [`BootstrapCA-class`] or a [`BootstrapPCA-class`] object.
-#' @param ... Currently not used.
 #' @example inst/examples/ex-bootstrap.R
 #' @references
 #'  Greenacre, Michael J. *Theory and Applications of Correspondence
@@ -214,21 +244,27 @@ NULL
 #'  Lebart, L., Piron, M. and Morineau, A. *Statistique exploratoire
 #'  multidimensionnelle: visualisation et inférence en fouille de données*.
 #'  Paris: Dunod, 2006.
+#'
+#'  Lockyear, K. (2013). Applying Bootstrapped Correspondence Analysis to
+#'  Archaeological Data. *Journal of Archaeological Science*, 40(12): 4744-4753.
+#'  \doi{10.1016/j.jas.2012.08.035}.
+#'
+#'  Ringrose, T. J. (1992). Bootstrapping and Correspondence Analysis in
+#'  Archaeology. *Journal of Archaeological Science*, 19(6): 615-629.
+#'  \doi{10.1016/0305-4403(92)90032-X}.
 #' @author N. Frerebeau
 #' @docType methods
 #' @family resampling methods
-#' @aliases bootstrap-method
-setGeneric(
-  name = "bootstrap",
-  def = function(object, ...) standardGeneric("bootstrap")
-)
+#' @rdname bootstrap
+#' @name boot
+NULL
 
 # Results ======================================================================
 ### Data -----------------------------------------------------------------------
 #' Get Original Data
 #'
-#' @param x An object from which to get element(s) (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to get element(s) (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param ... Currently not used.
 #' @return
 #'  Returns a [`data.frame`] of original data.
@@ -245,8 +281,8 @@ setGeneric(
 ## Coordinates -----------------------------------------------------------------
 #' Get Coordinates
 #'
-#' @param x An object from which to get element(s) (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to get element(s) (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
@@ -279,64 +315,11 @@ setGeneric(
   valueClass = "array"
 )
 
-#' Tidy Coordinates
-#'
-#' @param x A [`CA-class`] or [`PCA-class`] object.
-#' @param margin A length-one [`numeric`] vector giving the subscript
-#'  which the data will be returned: `1` indicates individuals/rows (the
-#'  default), `2` indicates variables/columns.
-#' @param axes A length-two [`numeric`] vector giving the dimensions
-#'  to be for which to compute results.
-#' @param principal A [`logical`] scalar: should principal coordinates be
-#'  returned? If `FALSE`, standard coordinates are returned.
-#' @param ... Currently not used.
-#' @return
-#'  `tidy()` returns a long [`data.frame`] with the following columns:
-#'    \describe{
-#'     \item{`label`}{Row/column names of the original data.}
-#'     \item{`component`}{Component.}
-#'     \item{`supplementary`}{Whether an observation is active or
-#'     supplementary.}
-#'     \item{`coordinate`}{Coordinates.}
-#'     \item{`contribution`}{Contributions to the definition of the components.}
-#'     \item{`cos2`}{\eqn{cos^2}{cos2}.}
-#'    }
-#'
-#'  `augment()` returns a wide [`data.frame`] of the row/column coordinates
-#'    along `axes` and the following columns:
-#'    \describe{
-#'     \item{`label`}{Row/column names of the original data.}
-#'     \item{`supplementary`}{Whether an observation is active or
-#'     supplementary.}
-#'     \item{`mass`}{Weight/mass of each observation.}
-#'     \item{`sum`}{Sum of squared coordinates along `axes`.}
-#'     \item{`contribution`}{Joint contributions to the definition of `axes`.}
-#'     \item{`cos2`}{Joint \eqn{cos^2}{cos2} along `axes`.}
-#'    }
-#' @example inst/examples/ex-coordinates.R
-#' @author N. Frerebeau
-#' @docType methods
-#' @family tidy methods
-#' @aliases tidy-method
-setGeneric(
-  name = "tidy",
-  def = function(x, ...) standardGeneric("tidy"),
-  valueClass = "data.frame"
-)
-
-#' @rdname tidy
-#' @aliases augment-method
-setGeneric(
-  name = "augment",
-  def = function(x, ...) standardGeneric("augment"),
-  valueClass = "data.frame"
-)
-
 ## Eigenvalues -----------------------------------------------------------------
 #' Get Eigenvalues
 #'
-#' @param x An object from which to get element(s) (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to get element(s) (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
@@ -379,8 +362,8 @@ setGeneric(
 ## Contributions ---------------------------------------------------------------
 #' Get Contributions
 #'
-#' @param x An object from which to get element(s) (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to get element(s) (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
@@ -427,15 +410,14 @@ setGeneric(
 ## Distances -------------------------------------------------------------------
 #' Get Distances
 #'
-#' @param x An object from which to get element(s) (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to get element(s) (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
 #' @param ... Currently not used.
 #' @return
-#'  * `get_distances()` returns a [`numeric`] vector of squared distance to
-#'  the centroide.
+#'  A [`numeric`] vector of squared distance to the centroide.
 #' @author N. Frerebeau
 #' @docType methods
 #' @family mutators
@@ -450,23 +432,23 @@ setGeneric(
 ## Biplot ----------------------------------------------------------------------
 #' Biplot
 #'
-#' @param x A [`CA-class`] or [`PCA-class`] object.
+#' @param x A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
 #' @param axes A length-two [`numeric`] vector giving the dimensions to be
 #'  plotted.
 #' @param type A [`character`] string specifying the biplot to be plotted
 #'  (see below). It must be one of "`rows`", "`columns`", "`contribution`" (CA),
 #'  "`form`" or "`covariance`" (PCA). Any unambiguous substring can be given.
-#' @param active A [`logical`] scalar: should the active observations be
-#'  plotted?
-#' @param sup A [`logical`] scalar: should the supplementary observations be
-#'  plotted?
 #' @param labels A [`character`] vector specifying whether
 #'  "`rows`"/"`individuals`" and/or "`columns`"/"`variables`" names must be
 #'  drawn. Any unambiguous substring can be given.
-#' @param col.rows,col.columns A color specification.
-#' @param pch.rows,pch.columns A symbol specification.
-#' @param cex.rows,cex.columns A numerical vector giving the amount by which
-#'  plotting characters and symbols should be scaled relative to the default.
+#' @param col.rows A length-two `vector` of color specification for the active
+#'  and supplementary rows.
+#' @param col.columns A length-two `vector` of color specification for the
+#'  active and supplementary columns.
+#' @param pch,pch.rows,pch.columns A symbol specification.
+#' @param cex,cex.rows,cex.columns A [`numeric`] vector giving the amount by
+#'  which plotting characters and symbols should be scaled relative to the
+#'  default.
 #' @param lty,lwd A specification for the line type and width.
 #' @param xlim A length-two [`numeric`] vector giving the x limits of the plot.
 #'  The default value, `NULL`, indicates that the range of the
@@ -476,6 +458,10 @@ setGeneric(
 #'  [finite][is.finite()] values to be plotted should be used.
 #' @param main A [`character`] string giving a main title for the plot.
 #' @param sub A [`character`] string giving a subtitle for the plot.
+#' @param legend A [`list`] of additional arguments to be passed to
+#'  [graphics::legend()]; names of the list are used as argument names.
+#'  If `NULL`, no legend is displayed.
+#' @inheritParams prepare
 #' @param ... Currently not used.
 #' @details
 #'  A biplot is the simultaneous representation of rows and columns of a
@@ -489,34 +475,43 @@ setGeneric(
 #'  separately.
 #' @section PCA Biplots:
 #'  \describe{
-#'   \item{`form`}{Form biplot (row-metric-preserving). The form biplot favors
-#'   the representation of the individuals: the distance between the individuals
+#'   \item{`form` (row-metric-preserving)}{The form biplot favors the
+#'   representation of the individuals: the distance between the individuals
 #'   approximates the Euclidean distance between rows. In the form biplot the
 #'   length of a vector approximates the quality of the representation of the
 #'   variable.}
-#'   \item{`covariance`}{Covariance biplot (column-metric-preserving). The
-#'   covariance biplot favors the representation of the variables: the length of
-#'   a vector approximates the standard deviation of the variable and the cosine
-#'   of the angle formed by two vectors approximates the correlation between the
-#'   two variables. In the covariance biplot the distance between the
-#'   individuals approximates the Mahalanobis distance between rows.}
+#'   \item{`covariance` (column-metric-preserving)}{The covariance biplot favors
+#'   the representation of the variables: the length of a vector approximates
+#'   the standard deviation of the variable and the cosine of the angle formed
+#'   by two vectors approximates the correlation between the two variables. In
+#'   the covariance biplot the distance between the individuals approximates the
+#'   Mahalanobis distance between rows.}
 #'  }
 #' @section CA Biplots:
 #'  \describe{
-#'   \item{`rows`}{Row principal biplot.}
-#'   \item{`columns`}{Column principal biplot.}
-#'   \item{`contribution`}{Contribution biplot}.
+#'   \item{`symetric` (symetric biplot)}{Represents the row and column profiles
+#'   simultaneously in a common space: rows and columns are in standard
+#'   coordinates. Note that the the inter-distance between any row and column
+#'   items is not meaningful.}
+#'   \item{`rows` (asymetric biplot)}{Row principal biplot (row-metric-preserving)
+#'   with rows in principal coordinates and columns in standard coordinates.}
+#'   \item{`columns` (asymetric biplot)}{Column principal biplot
+#'   (column-metric-preserving) with rows in standard coordinates and columns in
+#'   principal coordinates.}
+#'   \item{`contribution` (asymetric biplot)}{Contribution biplot with rows in
+#'   principal coordinates and columns in standard coordinates multiplied by the
+#'   square roots of their masses.}
 #'  }
 #' @return
 #'  `biplot()` is called for its side-effects: it results in a graphic being
 #'  displayed. Invisibly returns `x`.
 #' @example inst/examples/ex-biplot.R
 #' @references
-#'  Aitchison, J. and Greenacre, M. (2002). Biplots of Compositional Data.
+#'  Aitchison, J. and Greenacre, M. J. (2002). Biplots of Compositional Data.
 #'  *Journal of the Royal Statistical Society: Series C (Applied Statistics)*,
 #'  51(4): 375-92. \doi{10.1111/1467-9876.00275}.
 #'
-#'  Greenacre, M. J. *Biplots in Practice*. Bilbao: Fundación BBVA, 2010.
+#'  Greenacre, M. J. (2010). *Biplots in Practice*. Bilbao: Fundación BBVA.
 #' @author N. Frerebeau
 #' @docType methods
 #' @family plot methods
@@ -528,37 +523,7 @@ NULL
 #' Visualize Individuals Factor Map
 #'
 #' Plots row/individual principal coordinates.
-#' @param x A [`CA-class`] or [`PCA-class`] object.
-#' @param axes A length-two [`numeric`] vector giving the dimensions to be
-#'  plotted.
-#' @param active A [`logical`] scalar: should the active observations be
-#'  plotted?
-#' @param sup A [`logical`] scalar: should the supplementary observations be
-#'  plotted?
-#' @param labels A [`logical`] scalar: should labels be drawn?
-#' @param highlight A vector specifying the information to be highlighted.
-#'  If `NULL` (the default), no highlighting is applied.
-#'  It will only be mapped if at least one [graphical parameters][graphics::par]
-#'  is explicitly specified (see examples).
-#'  If a single `character` string is passed, it must be one of "`observation`",
-#'  "`mass`", "`sum`", "`contribution`" or "`cos2`" (see [`augment()`]).
-#'  Any unambiguous substring can be given.
-#' @param xlim A length-two [`numeric`] vector giving the x limits of the plot.
-#'  The default value, `NULL`, indicates that the range of the
-#'  [finite][is.finite()] values to be plotted should be used.
-#' @param ylim A length-two [`numeric`] vector giving the y limits of the plot.
-#'  The default value, `NULL`, indicates that the range of the
-#'  [finite][is.finite()] values to be plotted should be used.
-#' @param main A [`character`] string giving a main title for the plot.
-#' @param sub A [`character`] string giving a subtitle for the plot.
-#' @param panel.first An an `expression` to be evaluated after the plot axes are
-#'  set up but before any plotting takes place. This can be useful for drawing
-#'  background grids.
-#' @param panel.last An `expression` to be evaluated after plotting has taken
-#'  place but before the axes, title and box are added.
-#' @param legend A [`list`] of additional arguments to be passed to
-#'  [graphics::legend()]; names of the list are used as argument names.
-#'  If `NULL`, no legend is displayed.
+#' @inheritParams viz_points
 #' @param ... Further [graphical parameters][graphics::par] (see details).
 #' @details
 #'  Commonly used [graphical parameters][graphics::par] are:
@@ -599,7 +564,7 @@ setGeneric(
 #' Visualize Variables Factor Map
 #'
 #' Plots column/variable principal coordinates.
-#' @inheritParams viz_individuals
+#' @inheritParams viz_points
 #' @details
 #'  Commonly used [graphical parameters][graphics::par] are:
 #'  \describe{
@@ -642,7 +607,7 @@ setGeneric(
 #' Scree Plot
 #'
 #' Plot eigenvalues (scree plot) or variances histogram.
-#' @param x A [`CA-class`] or [`PCA-class`] object.
+#' @param x A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
 #' @param eigenvalues A [`logical`] scalar: should the eigenvalues be plotted
 #'  instead of variance/inertia?
 #' @param cumulative A [`logical`] scalar: should the cumulative percentages of
@@ -673,12 +638,11 @@ NULL
 #' Visualize Contributions and cos2
 #'
 #' Plots contributions histogram and \eqn{cos^2}{cos2} scatterplot.
-#' @param x A [`CA-class`] or [`PCA-class`] object.
+#' @param x A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
-#' @param axes A length-one [`numeric`] vector giving the dimensions to be
-#'  plotted.
+#' @param axes A [`numeric`] vector giving the dimensions to be plotted.
 #' @param active A [`logical`] scalar: should the active observations be
 #'  plotted?
 #' @param sup A [`logical`] scalar: should the supplementary observations be
@@ -720,8 +684,8 @@ setGeneric(
 #'  * `wrap_hull()` computes convex hull of a set of observations.
 #'  * `wrap_confidence()` computes a confidence ellipse.
 #'  * `wrap_tolerance()` computes a tolerance ellipse.
-#' @param x An object from which to wrap observations (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to wrap observations (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
@@ -766,8 +730,8 @@ setGeneric(
 
 #' Plot Envelopes
 #'
-#' @param x An object from which to wrap observations (a [`CA-class`] or
-#'  [`PCA-class`] object).
+#' @param x An object from which to wrap observations (a [`CA-class`],
+#'  [`MCA-class`] or [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
@@ -813,7 +777,7 @@ setGeneric(
 #' Object Summaries
 #'
 #' Provides a summary of the results of a multivariate data analysis.
-#' @param object A [`CA-class`] or [`PCA-class`] object.
+#' @param object A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be summarized: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
@@ -830,3 +794,96 @@ setGeneric(
 #' @name summary
 #' @rdname summary
 NULL
+
+#' Tidy Coordinates
+#'
+#' @param x A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
+#' @param margin A length-one [`numeric`] vector giving the subscript
+#'  which the data will be returned: `1` indicates individuals/rows (the
+#'  default), `2` indicates variables/columns.
+#' @param axes A length-two [`numeric`] vector giving the dimensions
+#'  to be for which to compute results.
+#' @param principal A [`logical`] scalar: should principal coordinates be
+#'  returned? If `FALSE`, standard coordinates are returned.
+#' @param ... Currently not used.
+#' @return
+#'  `tidy()` returns a long [`data.frame`] with the following columns:
+#'    \describe{
+#'     \item{`label`}{Row/column names of the original data.}
+#'     \item{`component`}{Component.}
+#'     \item{`supplementary`}{Whether an observation is active or
+#'     supplementary.}
+#'     \item{`coordinate`}{Coordinates.}
+#'     \item{`contribution`}{Contributions to the definition of the components.}
+#'     \item{`cos2`}{\eqn{cos^2}{cos2}.}
+#'    }
+#'
+#'  `augment()` returns a wide [`data.frame`] of the row/column coordinates
+#'    along `axes` and the following columns:
+#'    \describe{
+#'     \item{`label`}{Row/column names of the original data.}
+#'     \item{`supplementary`}{Whether an observation is active or
+#'     supplementary.}
+#'     \item{`mass`}{Weight/mass of each observation.}
+#'     \item{`sum`}{Sum of squared coordinates along `axes`.}
+#'     \item{`contribution`}{Joint contributions to the definition of `axes`.}
+#'     \item{`cos2`}{Joint \eqn{cos^2}{cos2} along `axes`.}
+#'    }
+#' @example inst/examples/ex-coordinates.R
+#' @author N. Frerebeau
+#' @docType methods
+#' @family summary
+#' @aliases tidy-method
+setGeneric(
+  name = "tidy",
+  def = function(x, ...) standardGeneric("tidy"),
+  valueClass = "data.frame"
+)
+
+#' @rdname tidy
+#' @aliases augment-method
+setGeneric(
+  name = "augment",
+  def = function(x, ...) standardGeneric("augment"),
+  valueClass = "data.frame"
+)
+
+# Tools ========================================================================
+#' Complete Disjunctive Table
+#'
+#' Computes the complete disjunctive table of a factor table.
+#' @param object A [`data.frame`].
+#' @param exclude A `vector` of values to be excluded when forming the set of
+#'  levels (see [factor()]). If `NULL` (the default), will make `NA` an extra
+#'  level.
+#' @param abbrev A [`logical`] scalar: should the column names be abbreviated?
+#'  If `FALSE`, these are of the form 'factor_level' but if `abbrev = TRUE` they
+#'  are just 'level' which will suffice if the factors have distinct levels.
+#' @param ... Currently not used.
+#' @return A [`data.frame`].
+#' @example inst/examples/ex-cdt.R
+#' @author N. Frerebeau
+#' @docType methods
+#' @family tools
+#' @aliases cdt-method
+setGeneric(
+  name = "cdt",
+  def = function(object, ...) standardGeneric("cdt")
+)
+
+#' Burt Table
+#'
+#' Computes the burt table of a factor table.
+#' @param object A [`data.frame`].
+#' @inheritParams cdt
+#' @param ... Currently not used.
+#' @return A symetric [`matrix`].
+#' @example inst/examples/ex-cdt.R
+#' @author N. Frerebeau
+#' @docType methods
+#' @family tools
+#' @aliases burt-method
+setGeneric(
+  name = "burt",
+  def = function(object, ...) standardGeneric("burt")
+)

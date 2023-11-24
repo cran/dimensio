@@ -44,7 +44,7 @@ viz_cos2(x, ...)
 )
 }
 \arguments{
-\item{x}{A \code{\linkS4class{CA}} or \code{\linkS4class{PCA}} object.}
+\item{x}{A \code{\linkS4class{CA}}, \code{\linkS4class{MCA}} or \code{\linkS4class{PCA}} object.}
 
 \item{...}{Extra parameters to be passed to \code{\link[graphics:barplot]{graphics::barplot()}}.}
 
@@ -52,8 +52,7 @@ viz_cos2(x, ...)
 data will be returned: \code{1} indicates individuals/rows (the default), \code{2}
 indicates variables/columns.}
 
-\item{axes}{A length-one \code{\link{numeric}} vector giving the dimensions to be
-plotted.}
+\item{axes}{A \code{\link{numeric}} vector giving the dimensions to be plotted.}
 
 \item{sort}{A \code{\link{logical}} scalar: should the data be sorted?}
 

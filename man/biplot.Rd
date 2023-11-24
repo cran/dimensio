@@ -11,12 +11,12 @@
   x,
   ...,
   axes = c(1, 2),
-  type = c("rows", "columns", "contributions"),
+  type = c("symetric", "rows", "columns", "contributions"),
   active = TRUE,
   sup = TRUE,
-  labels = "columns",
-  col.rows = "#004488",
-  col.columns = "#BB5566",
+  labels = NULL,
+  col.rows = c("#E69F00", "#009E73"),
+  col.columns = c("#56B4E9", "#F0E442"),
   cex.rows = graphics::par("cex"),
   cex.columns = graphics::par("cex"),
   pch.rows = 16,
@@ -24,7 +24,8 @@
   xlim = NULL,
   ylim = NULL,
   main = NULL,
-  sub = NULL
+  sub = NULL,
+  legend = list(x = "topleft")
 )
 
 \S4method{biplot}{PCA}(
@@ -35,20 +36,21 @@
   active = TRUE,
   sup = TRUE,
   labels = "variables",
-  col.rows = "#004488",
-  col.columns = "#BB5566",
-  pch.rows = 16,
-  pch.columns = 17,
-  lty = "solid",
+  col.rows = c("#E69F00", "#009E73"),
+  col.columns = c("#56B4E9", "#F0E442"),
+  pch = 16,
+  cex = 1,
+  lty = 1,
   lwd = 2,
   xlim = NULL,
   ylim = NULL,
   main = NULL,
-  sub = NULL
+  sub = NULL,
+  legend = list(x = "topleft")
 )
 }
 \arguments{
-\item{x}{A \code{\linkS4class{CA}} or \code{\linkS4class{PCA}} object.}
+\item{x}{A \code{\linkS4class{CA}}, \code{\linkS4class{MCA}} or \code{\linkS4class{PCA}} object.}
 
 \item{...}{Currently not used.}
 
@@ -69,12 +71,11 @@ plotted?}
 "\code{rows}"/"\code{individuals}" and/or "\code{columns}"/"\code{variables}" names must be
 drawn. Any unambiguous substring can be given.}
 
-\item{col.rows, col.columns}{A color specification.}
+\item{col.rows}{A length-two \code{vector} of color specification for the active
+and supplementary rows.}
 
-\item{cex.rows, cex.columns}{A numerical vector giving the amount by which
-plotting characters and symbols should be scaled relative to the default.}
-
-\item{pch.rows, pch.columns}{A symbol specification.}
+\item{col.columns}{A length-two \code{vector} of color specification for the
+active and supplementary columns.}
 
 \item{xlim}{A length-two \code{\link{numeric}} vector giving the x limits of the plot.
 The default value, \code{NULL}, indicates that the range of the
@@ -87,6 +88,16 @@ The default value, \code{NULL}, indicates that the range of the
 \item{main}{A \code{\link{character}} string giving a main title for the plot.}
 
 \item{sub}{A \code{\link{character}} string giving a subtitle for the plot.}
+
+\item{legend}{A \code{\link{list}} of additional arguments to be passed to
+\code{\link[graphics:legend]{graphics::legend()}}; names of the list are used as argument names.
+If \code{NULL}, no legend is displayed.}
+
+\item{pch, pch.rows, pch.columns}{A symbol specification.}
+
+\item{cex, cex.rows, cex.columns}{A \code{\link{numeric}} vector giving the amount by
+which plotting characters and symbols should be scaled relative to the
+default.}
 
 \item{lty, lwd}{A specification for the line type and width.}
 }
@@ -111,26 +122,35 @@ separately.
 \section{PCA Biplots}{
 
 \describe{
-\item{\code{form}}{Form biplot (row-metric-preserving). The form biplot favors
-the representation of the individuals: the distance between the individuals
+\item{\code{form} (row-metric-preserving)}{The form biplot favors the
+representation of the individuals: the distance between the individuals
 approximates the Euclidean distance between rows. In the form biplot the
 length of a vector approximates the quality of the representation of the
 variable.}
-\item{\code{covariance}}{Covariance biplot (column-metric-preserving). The
-covariance biplot favors the representation of the variables: the length of
-a vector approximates the standard deviation of the variable and the cosine
-of the angle formed by two vectors approximates the correlation between the
-two variables. In the covariance biplot the distance between the
-individuals approximates the Mahalanobis distance between rows.}
+\item{\code{covariance} (column-metric-preserving)}{The covariance biplot favors
+the representation of the variables: the length of a vector approximates
+the standard deviation of the variable and the cosine of the angle formed
+by two vectors approximates the correlation between the two variables. In
+the covariance biplot the distance between the individuals approximates the
+Mahalanobis distance between rows.}
 }
 }
 
 \section{CA Biplots}{
 
 \describe{
-\item{\code{rows}}{Row principal biplot.}
-\item{\code{columns}}{Column principal biplot.}
-\item{\code{contribution}}{Contribution biplot}.
+\item{\code{symetric} (symetric biplot)}{Represents the row and column profiles
+simultaneously in a common space: rows and columns are in standard
+coordinates. Note that the the inter-distance between any row and column
+items is not meaningful.}
+\item{\code{rows} (asymetric biplot)}{Row principal biplot (row-metric-preserving)
+with rows in principal coordinates and columns in standard coordinates.}
+\item{\code{columns} (asymetric biplot)}{Column principal biplot
+(column-metric-preserving) with rows in standard coordinates and columns in
+principal coordinates.}
+\item{\code{contribution} (asymetric biplot)}{Contribution biplot with rows in
+principal coordinates and columns in standard coordinates multiplied by the
+square roots of their masses.}
 }
 }
 
@@ -156,6 +176,9 @@ data("benthos")
 ## Compute correspondence analysis
 X <- ca(benthos)
 
+## Symetric CA biplot
+biplot(X, labels = "columns")
+
 ## Row principal CA biplot
 biplot(X, type = "row", labels = "columns")
 
@@ -166,11 +189,11 @@ biplot(X, type = "column", labels = "columns")
 biplot(X, type = "contrib", labels = NULL)
 }
 \references{
-Aitchison, J. and Greenacre, M. (2002). Biplots of Compositional Data.
+Aitchison, J. and Greenacre, M. J. (2002). Biplots of Compositional Data.
 \emph{Journal of the Royal Statistical Society: Series C (Applied Statistics)},
 51(4): 375-92. \doi{10.1111/1467-9876.00275}.
 
-Greenacre, M. J. \emph{Biplots in Practice}. Bilbao: Fundación BBVA, 2010.
+Greenacre, M. J. (2010). \emph{Biplots in Practice}. Bilbao: Fundación BBVA.
 }
 \seealso{
 Other plot methods: 

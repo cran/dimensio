@@ -37,10 +37,10 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 ## Overview
 
 Simple Principal Components Analysis (PCA; see `vignette("pca")`) and
-Correspondence Analysis (CA) based on the Singular Value Decomposition
-(SVD). This package provides S4 classes and methods to compute, extract,
-summarize and visualize results of multivariate data analysis. It also
-includes methods for partial bootstrap validation.
+(Multiple) Correspondence Analysis (CA) based on the Singular Value
+Decomposition (SVD). This package provides S4 classes and methods to
+compute, extract, summarize and visualize results of multivariate data
+analysis. It also includes methods for partial bootstrap validation.
 
 There are many very good packages for multivariate data analysis (such
 as [**FactoMineR**](http://factominer.free.fr/),
@@ -56,9 +56,9 @@ tools to explore the results of the analysis.
       Frerebeau N (2023). _dimensio: Multivariate Data Analysis_.
       Université Bordeaux Montaigne, Pessac, France.
       doi:10.5281/zenodo.4478530 <https://doi.org/10.5281/zenodo.4478530>,
-      R package version 0.4.1, <https://packages.tesselle.org/dimensio/>.
+      R package version 0.5.0, <https://packages.tesselle.org/dimensio/>.
 
-    Une entrée BibTeX pour les utilisateurs LaTeX est
+    A BibTeX entry for LaTeX users is
 
       @Manual{,
         author = {Nicolas Frerebeau},
@@ -66,7 +66,7 @@ tools to explore the results of the analysis.
         year = {2023},
         organization = {Université Bordeaux Montaigne},
         address = {Pessac, France},
-        note = {R package version 0.4.1},
+        note = {R package version 0.5.0},
         doi = {10.5281/zenodo.4478530},
         url = {https://packages.tesselle.org/dimensio/},
       }

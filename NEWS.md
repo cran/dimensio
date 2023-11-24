@@ -1,7 +1,20 @@
+# dimensio 0.5.0
+## New classes and methods
+* Add `cdt()` to compute the complete disjunctive table of a factor table.
+* Add `burt()` to compute the Burt table of a factor table.
+* Add `mca()` to compute multiple correspondence analysis.
+
+## Enhancements
+* `biplot()` allows to produce a symetric CA biplot.
+* Set graphical parameters as arguments in `biplot()`.
+* Add automatic legend in `biplot()`.
+
+## Internals
+* Import **arkhe**.
+
 # dimensio 0.4.1
 ## Bugfixes & changes
 * Put `...` after required arguments.
-* Suggest **ggplot2** instead of import.
 
 ## Enhancements
 * `viz_individuals()`, `viz_row()`, `viz_variables()`, `viz_columns()` and `biplot()` gained new arguments allowing set the x and y limits of the plot.

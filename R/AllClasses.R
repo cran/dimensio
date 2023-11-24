@@ -138,6 +138,8 @@
 #' CA Results
 #'
 #' An S4 class to store the results of a simple correspondence analysis.
+#' @note
+#'  This class inherits from [`MultivariateAnalysis-class`].
 #' @example inst/examples/ex-ca.R
 #' @author N. Frerebeau
 #' @family class
@@ -150,11 +152,38 @@
   contains = "MultivariateAnalysis"
 )
 
-#' @rdname CA-class
+#' Bootstrap CA Results
+#'
+#' An S4 class to store the bootstrap of a correspondence analysis.
+#' @note
+#'  This class inherits from [`CA-class`] and [`MultivariateBootstrap-class`].
+#' @example inst/examples/ex-bootstrap.R
+#' @author N. Frerebeau
+#' @family class
+#' @docType class
 #' @aliases BootstrapCA-class
+#' @keywords internal
 .BootstrapCA <- setClass(
   Class = "BootstrapCA",
   contains = c("MultivariateBootstrap", "CA")
+)
+
+# MCA ==========================================================================
+#' MCA Results
+#'
+#' An S4 class to store the results of a multiple correspondence analysis.
+#' @note
+#'  This class inherits from [`CA-class`].
+# @example inst/examples/ex-mca.R
+#' @author N. Frerebeau
+#' @family class
+#' @docType class
+#' @exportClass MCA
+#' @aliases MCA-class
+#' @keywords internal
+.MCA <- setClass(
+  Class = "MCA",
+  contains = "CA"
 )
 
 # PCA ==========================================================================
@@ -165,6 +194,8 @@
 #'  dataset (active individuals only).
 #' @slot scale A [`numeric`] vector giving the column standard deviations of the
 #'  initial dataset (active individuals only).
+#' @note
+#'  This class inherits from [`MultivariateAnalysis-class`].
 #' @example inst/examples/ex-pca.R
 #' @author N. Frerebeau
 #' @family class
@@ -181,8 +212,17 @@
   contains = "MultivariateAnalysis"
 )
 
-#' @rdname PCA-class
+#' Bootstrap PCA Results
+#'
+#' An S4 class to store the bootstrap of a principal components analysis.
+#' @note
+#'  This class inherits from [`PCA-class`] and [`MultivariateBootstrap-class`].
+#' @example inst/examples/ex-bootstrap.R
+#' @author N. Frerebeau
+#' @family class
+#' @docType class
 #' @aliases BootstrapPCA-class
+#' @keywords internal
 .BootstrapPCA <- setClass(
   Class = "BootstrapPCA",
   contains = c("MultivariateBootstrap", "PCA")

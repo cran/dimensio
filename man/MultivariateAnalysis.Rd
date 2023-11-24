@@ -34,7 +34,10 @@ In the code snippets below, \code{x} is a \code{MultivariateAnalysis} object.
 
 \seealso{
 Other class: 
+\code{\link{BootstrapCA-class}},
+\code{\link{BootstrapPCA-class}},
 \code{\link{CA-class}},
+\code{\link{MCA-class}},
 \code{\link{MultivariateBootstrap}},
 \code{\link{MultivariateResults}},
 \code{\link{MultivariateSummary}},

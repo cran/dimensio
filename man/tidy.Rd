@@ -19,7 +19,7 @@ augment(x, ...)
 \S4method{tidy}{MultivariateAnalysis}(x, ..., margin = 1, principal = TRUE)
 }
 \arguments{
-\item{x}{A \code{\linkS4class{CA}} or \code{\linkS4class{PCA}} object.}
+\item{x}{A \code{\linkS4class{CA}}, \code{\linkS4class{MCA}} or \code{\linkS4class{PCA}} object.}
 
 \item{...}{Currently not used.}
 
@@ -80,7 +80,11 @@ head(tidy(X, margin = 2))
 head(augment(X, margin = 1, axes = c(1, 2)))
 head(augment(X, margin = 2, axes = c(1, 2)))
 }
+\seealso{
+Other summary: 
+\code{\link{summary}()}
+}
 \author{
 N. Frerebeau
 }
-\concept{tidy methods}
+\concept{summary}

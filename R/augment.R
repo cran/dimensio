@@ -10,26 +10,26 @@ setMethod(
   signature = c(x = "MultivariateAnalysis"),
   definition = function(x, ..., margin = 1, axes = c(1, 2), principal = TRUE) {
     ## Validation
-    assert_length(margin, 1)
-    assert_length(axes, 2)
+    arkhe::assert_length(margin, 1)
+    arkhe::assert_length(axes, 2)
 
     ## Get data
     coords <- get_coordinates(x, margin = margin, principal = principal)
-    weight <- data.frame(
-      mass = get_masses(x, margin = margin)
-    )
-    contrib <- data.frame(
-      contribution = joint_contributions(x, margin = margin, axes = axes)
-    )
+
+    mass <- contrib <- rep(NA_real_, nrow(coords))
+    mass[!coords$.sup] <- get_masses(x, margin = margin)
+    contrib[!coords$.sup] <- joint_contributions(x, margin = margin, axes = axes)
+    sum <- joint_coordinates(x, margin = margin, axes = axes, principal = principal)
+    cos2 <- joint_cos2(x, margin = margin, axes = axes)
 
     data.frame(
       coords[, axes, drop = FALSE],
       label = rownames(coords),
       supplementary = coords$.sup,
-      mass = weight[match(rownames(coords), rownames(weight)), ],
-      sum = joint_coordinates(x, margin = margin, axes = axes),
-      contribution = contrib[match(rownames(coords), rownames(contrib)), ],
-      cos2 = joint_cos2(x, margin = margin, axes = axes),
+      mass = mass,
+      sum = sum,
+      contribution = contrib,
+      cos2 = cos2,
       row.names = NULL
     )
   }
@@ -71,9 +71,10 @@ joint <- function(object, what, ...) {
   fun(object, ...)
 }
 
-joint_coordinates <- function(object, ..., margin = 1, axes = c(1, 2)) {
+joint_coordinates <- function(object, ..., margin = 1, axes = c(1, 2),
+                              principal = TRUE) {
   axes <- axes[c(1, 2)]
-  coord <- get_coordinates(object, margin = margin)
+  coord <- get_coordinates(object, margin = margin, principal = principal)
   rowSums(coord[, axes]^2)
 }
 

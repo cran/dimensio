@@ -2,7 +2,7 @@
 #' \tabular{ll}{
 #'  **Package:** \tab dimensio \cr
 #'  **Type:** \tab Package \cr
-#'  **Version:** \tab 0.4.1 \cr
+#'  **Version:** \tab 0.5.0 \cr
 #'  **License:** \tab GPL-3 \cr
 #'  **Zenodo:** \tab \doi{10.5281/zenodo.4478530} \cr
 #' }
@@ -32,12 +32,13 @@
 #' @keywords internal
 "_PACKAGE"
 
-#' @importFrom grDevices adjustcolor chull colorRamp hcl.colors rgb
+#' @import arkhe
+#' @importFrom grDevices adjustcolor as.raster chull colorRamp hcl.colors rgb
 #' @importFrom methods Arith as as<- callGeneric callNextMethod
 #' .hasSlot initialize is new setClass setClassUnion
 #' setGeneric setMethod slot slot<- slotNames validObject .valueClassTest
-#' @importFrom stats approx as.dist cov optim qchisq qf rmultinom
-#' @importFrom utils capture.output stack tail
+#' @importFrom stats aggregate approx cov na.omit qchisq qf rmultinom
+#' @importFrom utils capture.output modifyList stack tail
 NULL
 
 # Notes:
