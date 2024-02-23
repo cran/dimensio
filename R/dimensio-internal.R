@@ -59,7 +59,8 @@ find_variable <- function(index, n, names = NULL) {
 #'  progress?
 #' @details
 #'  Side effect: move `sup` and `extra` columns at the end of `x`.
-#' @return A `list` with the following elements: `data`, `sup` and `extra`.
+#' @return A `list` with the following elements: `data` (a `data.frame`),
+#'  `sup` (an `integer` vector) and `extra` (a `data.frame` or `NULL`).
 #' @keywords internal
 #' @noRd
 drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
@@ -75,12 +76,13 @@ drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
     x <- x[, !(not_ok | is_sup | is_extra), drop = FALSE]
 
     if (any(is_sup)) {
+      ## Move supplementary variables at the end
       sup <- seq_len(sum(is_sup)) + ncol(x)
       x <- cbind(x, old[, is_sup, drop = FALSE])
     }
     if (any(is_extra)) {
-      extra <- seq_len(sum(is_extra)) + ncol(x)
-      x <- cbind(x, old[, is_extra, drop = FALSE])
+      ## Remove extra variable
+      extra <- old[, is_extra, drop = FALSE]
     }
 
     # Generate message
@@ -148,7 +150,7 @@ drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
 #' @keywords internal
 prepare <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
                     sup = TRUE, principal = TRUE, highlight = NULL,
-                    col = NULL, bg = NULL, pch = NULL, cex = NULL,
+                    col = NULL, bg = NULL, pch = 16, cex = NULL,
                     lty = NULL, lwd = NULL, alpha = FALSE) {
   ## Prepare data
   data <- augment(x, margin = margin, axes = axes, principal = principal)
@@ -172,14 +174,26 @@ prepare <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
   ## Colors
   col <- scale_color(x = highlight, col = col, alpha = alpha)
   bg <- scale_color(x = highlight, col = bg, alpha = alpha)
-  ## Symbol
-  pch <- scale_symbole(x = highlight, symb = pch)
-  ## Size
-  cex <- scale_size(x = highlight, size = cex)
-  ## Line type
-  lty <- scale_symbole(x = highlight, symb = lty)
-  ## Line width
-  lwd <- scale_size(x = highlight, size = lwd)
+  if (!is.double(highlight)) { # Discrete scales
+    ## Symbol
+    if (length(pch) == 1) pch <- rep(pch, length.out = n)
+    pch <- scale_symbol(x = highlight, symb = pch, what = "pch")
+    ## Size
+    cex <- cex %||% graphics::par("cex")
+    ## Line type
+    lty <- scale_symbol(x = highlight, symb = lty, what = "lty")
+    ## Line width
+    lwd <- lwd %||% graphics::par("lwd")
+  } else { # Continuous scales
+    ## Symbol
+    pch <- pch %||% graphics::par("pch")
+    ## Size
+    cex <- scale_size(x = highlight, size = cex, what = "cex")
+    ## Line type
+    lty <- lty %||% graphics::par("lty")
+    ## Line width
+    lwd <- scale_size(x = highlight, size = lwd, what = "lwd")
+  }
 
   data.frame(
     x = data[[1]],
@@ -252,62 +266,35 @@ prepare_legend <- function(x, args, points = TRUE, lines = TRUE) {
 
 scale_color <- function(x, col = NULL, alpha = FALSE) {
   if (is.null(x)) {
-    if (is.null(col)) col <- graphics::par("col")
+    col <- col %||% graphics::par("col")
     return(col)
   }
 
   if (is.double(x)) {
     ## Continuous scale
-    if (is.null(col)) col <- grDevices::hcl.colors(12, "YlOrRd", rev = TRUE)
-    x <- arkhe::scale_range(x) # Rescale to [0,1]
-    col <- grDevices::colorRamp(col)(x)
-    col <- grDevices::rgb(col, maxColorValue = 255)
-    ## Alpha transparency
+    col <- arkhe::palette_color_continuous(x, palette = col)
     if (alpha) col <- grDevices::adjustcolor(col, alpha.f = alpha)
   } else {
     ## Discrete scale
-    n_col <- length(unique(x))
-    if (is.null(col)) col <- grDevices::hcl.colors(n_col, "viridis")
-    col <- recycle(col, n_col)
-    col <- col[as.factor(x)]
+    col <- arkhe::palette_color_discrete(x, palette = col)
   }
 
   col
 }
-
-scale_symbole <- function(x, symb = NULL, what = "pch") {
-  if (is.double(x) && length(symb) > 1) {
-    warning("Continuous value supplied to discrete scale.", call. = FALSE)
+scale_symbol <- function(x, symb = NULL, what = "pch") {
+  if (is.null(x)) {
+    symb <- symb %||% graphics::par(what)
+    return(symb)
   }
 
-  if (is.null(symb)) symb <- graphics::par(what)
-  if (is.null(x)) return(symb)
-
-  n_symb <- length(unique(x))
-  symb <- recycle(symb, n_symb)
-  symb <- symb[as.factor(x)]
-  symb
+  arkhe::palette_shape(x = x, palette = symb)
 }
-
 scale_size <- function(x, size = NULL, what = "cex") {
-  if (is.null(size)) size <- graphics::par(what)
-  if (!is.double(x)) {
-    if (length(size) > 1)
-      warning("Discrete value supplied to continuous scale.", call. = FALSE)
+  if (is.null(x)) {
+    size <- size %||% graphics::par(what)
     return(size)
   }
 
-  arkhe::scale_range(x, to = range(size))
+  arkhe::palette_size(x = x, palette = size)
 }
 
-recycle <- function(x, n, verbose = getOption("dimensio.verbose")) {
-  if (length(x) >= n) return(x[seq_len(n)])
-
-  if (verbose && length(x) > 1) {
-    arg <- deparse(substitute(x))
-    msg <- sprintf("Note that %s was recycled to length %d.", sQuote(arg), n)
-    message(msg)
-  }
-  x <- rep_len(x, length.out = n)
-  x
-}

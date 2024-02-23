@@ -9,7 +9,9 @@ setGeneric("dimnames")
 setGeneric("loadings")
 setGeneric("biplot")
 
-setGeneric("bootstrap", package = "arkhe")
+# Import S4 generics ===========================================================
+#' @importMethodsFrom arkhe bootstrap
+NULL
 
 # Extract ======================================================================
 ## Get -------------------------------------------------------------------------
@@ -17,12 +19,12 @@ setGeneric("bootstrap", package = "arkhe")
 #'
 #' Extract loadingsin principal components analysis.
 #' @param x A [`PCA-class`] object.
+#' @param ... Currently not used.
 #' @return
 #'  Returns variable loadings (i.e. the coefficients of the linear combination
 #'  of the original variables).
 #' @note
-#'  `loadings()` is only implemented for consistency with
-#'  \pkg{[stats][stats::loadings]}.
+#'  `loadings()` is only implemented for consistency with [stats::loadings()].
 #' @author N. Frerebeau
 #' @docType methods
 #' @family mutators
@@ -182,6 +184,8 @@ setGeneric(
 #'  will be returned.
 #' @param sup_row A `vector` specifying the indices of the supplementary rows.
 #' @param sup_col A `vector` specifying the indices of the supplementary columns.
+#' @param sup_quali A `vector` specifying the indices of the supplementary
+#'  qualitative columns.
 #' @param weight_row A [`numeric`] vector specifying the active row (individual)
 #'  weights. If `NULL` (the default), uniform weights are used. Row weights are
 #'  internally normalized to sum 1
@@ -657,6 +661,10 @@ NULL
 #' @param col,border A [`character`] string specifying the bars infilling and
 #'  border colors.
 #' @param ... Extra parameters to be passed to [graphics::barplot()].
+#' @details
+#'  The red dashed line indicates the expected average contribution (variables
+#'  with a contribution larger than this cutoff can be considered as important
+#'  in contributing to the component).
 #' @return
 #'  `viz_contributions()` and `viz_cos2()` are called for their side-effects:
 #'  they result in a graphic being displayed. Invisibly return `x`.
@@ -690,7 +698,7 @@ setGeneric(
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
 #' @param axes A length-two [`numeric`] vector giving the dimensions
-#'  to be for which to compute results.
+#'  for which to compute results.
 #' @param group A vector specifying the group an observation belongs to.
 #' @param level A [`numeric`] vector specifying the confidence/tolerance level.
 #' @param ... Currently not used.
@@ -736,7 +744,7 @@ setGeneric(
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
 #' @param axes A length-two [`numeric`] vector giving the dimensions
-#'  to be for which to compute results.
+#'  for which to compute results.
 #' @param group A vector specifying the group an observation belongs to.
 #' @param level A [`numeric`] vector specifying the confidence/tolerance level.
 #' @param ... Further [graphical parameters][graphics::par] to be passed to
@@ -787,6 +795,7 @@ setGeneric(
 #'  summarized?
 #' @param sup A [`logical`] scalar: should the supplementary observations be
 #'  summarized?
+#' @param ... Currently not used.
 #' @example inst/examples/ex-summary.R
 #' @author N. Frerebeau
 #' @docType methods
@@ -802,7 +811,7 @@ NULL
 #'  which the data will be returned: `1` indicates individuals/rows (the
 #'  default), `2` indicates variables/columns.
 #' @param axes A length-two [`numeric`] vector giving the dimensions
-#'  to be for which to compute results.
+#'  for which to compute results.
 #' @param principal A [`logical`] scalar: should principal coordinates be
 #'  returned? If `FALSE`, standard coordinates are returned.
 #' @param ... Currently not used.

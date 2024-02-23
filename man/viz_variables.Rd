@@ -7,7 +7,7 @@
 \alias{viz_columns}
 \alias{viz_columns-method}
 \alias{viz_columns,MultivariateAnalysis-method}
-\alias{viz_columns,BootstrapCA-method}
+\alias{viz_columns,MultivariateBootstrap-method}
 \alias{viz_variables,PCA-method}
 \alias{viz_variables,CA-method}
 \alias{viz_variables,BootstrapPCA-method}
@@ -34,7 +34,7 @@ viz_columns(x, ...)
   legend = list(x = "topleft")
 )
 
-\S4method{viz_columns}{BootstrapCA}(x, ..., axes = c(1, 2))
+\S4method{viz_columns}{MultivariateBootstrap}(x, ..., axes = c(1, 2))
 
 \S4method{viz_variables}{PCA}(
   x,
@@ -43,6 +43,7 @@ viz_columns(x, ...)
   active = TRUE,
   sup = TRUE,
   labels = TRUE,
+  top = 10,
   highlight = NULL,
   xlim = NULL,
   ylim = NULL,
@@ -116,6 +117,11 @@ place but before the axes, title and box are added.}
 \item{legend}{A \code{\link{list}} of additional arguments to be passed to
 \code{\link[graphics:legend]{graphics::legend()}}; names of the list are used as argument names.
 If \code{NULL}, no legend is displayed.}
+
+\item{top}{An \code{\link{integer}} specifying the number of labels to draw.
+Only the labels of the \code{top} \eqn{n} observations contributing the most to
+the factorial map will be drawn. If \code{NULL}, all labels are drawn.
+Only used if \code{labels} is \code{TRUE}.}
 }
 \value{
 \verb{viz_*()} is called for its side-effects: it results in a graphic
@@ -179,8 +185,6 @@ viz_individuals(X, highlight = iris$Species, pch = 21:23,
 viz_variables(X, highlight = c("Petal", "Petal", "Sepal", "Sepal"),
               col = c("#EE7733", "#0077BB"),
               lty = c(1, 3))
-
-
 }
 \seealso{
 Other plot methods: 

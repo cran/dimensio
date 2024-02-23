@@ -1,3 +1,17 @@
+# dimensio 0.6.0
+## New classes and methods
+* Add `predict()` method for MCA.
+
+## Bugfixes & changes
+* By default, `viz_individuals()`, `viz_row()`, `viz_variables()` and `viz_columns()` only display labels of the 10 observations contributing the most to the factorial map.
+
+## Enhancements
+* `viz_contributions()` displays the expected average contribution.
+* `pca()` gained a new argument to specify supplementary qualitative variables.
+
+## Breaking changes
+* `plot_*()` methods are now defunct (deprecated in v0.4.0).
+
 # dimensio 0.5.0
 ## New classes and methods
 * Add `cdt()` to compute the complete disjunctive table of a factor table.
