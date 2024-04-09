@@ -7,12 +7,12 @@
 prepare(
   x,
   margin,
-  ...,
   axes = c(1, 2),
   active = TRUE,
   sup = TRUE,
   principal = TRUE,
   highlight = NULL,
+  reorder = TRUE,
   col = NULL,
   bg = NULL,
   pch = 16,
@@ -29,8 +29,6 @@ prepare(
 which the data will be returned: \code{1} indicates individuals/rows (the
 default), \code{2} indicates variables/columns.}
 
-\item{...}{Currently not used.}
-
 \item{axes}{A length-two \code{\link{numeric}} vector giving the dimensions to be
 plotted.}
 
@@ -45,9 +43,9 @@ returned? If \code{FALSE}, standard coordinates are returned.}
 
 \item{highlight}{A vector specifying the information to be highlighted.
 If \code{NULL} (the default), no highlighting is applied. If a single \code{character}
-string is passed, it must be one of "\code{observation}", "\code{mass}", "\code{sum}",
-"\code{contribution}" or "\code{cos2}" (see \code{\link[=augment]{augment()}}). Any unambiguous substring
-can be given.}
+string is passed, it must be the name of a categorical variable, or one of
+"\code{observation}", "\code{mass}", "\code{sum}", "\code{contribution}" or "\code{cos2}"
+(see \code{\link[=augment]{augment()}}).}
 
 \item{col}{The colors for lines and points.}
 
@@ -68,6 +66,7 @@ A \code{\link{data.frame}} with the following columns:
 \item{\code{y}}{Coordinates along y.}
 \item{\code{z}}{Variable to be highlighted.}
 \item{\code{label}}{Label.}
+\item{\code{sup}}{Is supplementary?}
 \item{\code{col}}{Color for lines and points.}
 \item{\code{bg}}{Background color.}
 \item{\code{pch}}{Symbol.}

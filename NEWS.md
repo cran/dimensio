@@ -1,3 +1,11 @@
+# dimensio 0.7.0
+## Bugfixes & changes
+* Fix highlighting in `viz_individuals()` and `viz_row()`.
+* The default number of labeled points can now be changed in `viz_individuals()`, `viz_row()`, `viz_variables()` and `viz_columns()`.
+
+## Enhancements
+* Allow to highlight supplementary qualitative variables in `viz_individuals()`, `viz_row()`, `viz_variables()` and `viz_columns()`.
+
 # dimensio 0.6.0
 ## New classes and methods
 * Add `predict()` method for MCA.

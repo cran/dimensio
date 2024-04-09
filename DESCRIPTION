@@ -1,6 +1,6 @@
 Package: dimensio
 Title: Multivariate Data Analysis
-Version: 0.6.0
+Version: 0.7.0
 Authors@R: c(
     person("Nicolas", "Frerebeau", , "nicolas.frerebeau@u-bordeaux-montaigne.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5759-4944", affiliation = "Université Bordeaux Montaigne")),
@@ -30,7 +30,7 @@ Suggests: khroma, knitr, markdown, rsvg, svglite, tinysnapshot,
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Collate: 'AllClasses.R' 'AllGenerics.R' 'augment.R' 'biplot.R'
         'bootstrap.R' 'ca.R' 'coerce.R' 'data.R' 'dimensio-defunct.R'
         'dimensio-deprecated.R' 'dimensio-internal.R'
@@ -44,7 +44,7 @@ Collate: 'AllClasses.R' 'AllGenerics.R' 'augment.R' 'biplot.R'
         'viz_ellipse.R' 'viz_hull.R' 'viz_labels.R' 'wrap_ellipses.R'
         'wrap_hull.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2024-02-23 10:09:57 UTC; nicolas
+Packaged: 2024-04-09 09:54:41 UTC; nicolas
 Author: Nicolas Frerebeau [aut, cre] (<https://orcid.org/0000-0001-5759-4944>,
     Université Bordeaux Montaigne),
   Jean-Baptiste Fourvel [ctb] (<https://orcid.org/0000-0002-1061-4642>,
@@ -54,4 +54,4 @@ Author: Nicolas Frerebeau [aut, cre] (<https://orcid.org/0000-0001-5759-4944>,
   Université Bordeaux Montaigne [fnd],
   CNRS [fnd]
 Repository: CRAN
-Date/Publication: 2024-02-23 10:30:03 UTC
+Date/Publication: 2024-04-09 10:20:02 UTC

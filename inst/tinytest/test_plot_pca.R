@@ -9,8 +9,7 @@ if (at_home()) {
   data("iris")
 
   # PCA - Plot coordinates =====================================================
-  sup_ind <- seq(from = 1, to = 150, by = 5)
-  res <- pca(iris, sup_row = sup_ind, sup_col = 4)
+  res <- pca(iris, sup_row = 1:10, sup_col = 4, sup_quali = 5)
 
   for (i in c(TRUE, FALSE)) {
     for (j in c(TRUE, FALSE)) {
@@ -19,6 +18,9 @@ if (at_home()) {
       expect_snapshot_plot(plot_ind, sprintf("PCA_ind_%d-%d", i, j))
     }
   }
+
+  plot_ind_sup_extra <- function() viz_individuals(res,  highlight = "Species")
+  plot_ind_sup_extra <- function() viz_individuals(res,  highlight = iris$Species)
 
   for (i in c(TRUE, FALSE)) {
     for (j in c(TRUE, FALSE)) {
@@ -32,9 +34,12 @@ if (at_home()) {
   }
 
   # PCA - Plot aesthetics ======================================================
-  res <- pca(iris)
+  res <- pca(iris, sup_quali = 5)
 
   # Individuals
+  plot_ind_quali <- function() viz_individuals(res, highlight = "Species")
+  expect_snapshot_plot(plot_ind_quali, "PCA_ind_highlight_quali")
+
   plot_ind_cos2 <- function() viz_individuals(res, highlight = "cos2")
   expect_snapshot_plot(plot_ind_cos2, "PCA_ind_highlight_cos2")
 

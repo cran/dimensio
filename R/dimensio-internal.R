@@ -119,9 +119,9 @@ drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
 #'  plotted?
 #' @param highlight A vector specifying the information to be highlighted.
 #'  If `NULL` (the default), no highlighting is applied. If a single `character`
-#'  string is passed, it must be one of "`observation`", "`mass`", "`sum`",
-#'  "`contribution`" or "`cos2`" (see [`augment()`]). Any unambiguous substring
-#'  can be given.
+#'  string is passed, it must be the name of a categorical variable, or one of
+#'  "`observation`", "`mass`", "`sum`", "`contribution`" or "`cos2`"
+#'  (see [`augment()`]).
 #  It will only be mapped if at least one [graphical parameters][graphics::par]
 #  is explicitly specified (see examples).
 #' @param col The colors for lines and points.
@@ -131,7 +131,6 @@ drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
 #' @param cex A numerical vector giving the amount by which plotting characters
 #'  and symbols should be scaled relative to the default.
 #' @param lty,lwd A specification for the line type and width.
-#' @param ... Currently not used.
 #' @return
 #'  A [`data.frame`] with the following columns:
 #'    \describe{
@@ -139,6 +138,7 @@ drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
 #'     \item{`y`}{Coordinates along y.}
 #'     \item{`z`}{Variable to be highlighted.}
 #'     \item{`label`}{Label.}
+#'     \item{`sup`}{Is supplementary?}
 #'     \item{`col`}{Color for lines and points.}
 #'     \item{`bg`}{Background color.}
 #'     \item{`pch`}{Symbol.}
@@ -148,58 +148,84 @@ drop_variable <- function(x, f, negate = FALSE, sup = NULL, extra = NULL,
 #'    }
 #' @author N. Frerebeau
 #' @keywords internal
-prepare <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
-                    sup = TRUE, principal = TRUE, highlight = NULL,
+prepare <- function(x, margin, axes = c(1, 2), active = TRUE,
+                    sup = TRUE, principal = TRUE,
+                    highlight = NULL, reorder = TRUE,
                     col = NULL, bg = NULL, pch = 16, cex = NULL,
                     lty = NULL, lwd = NULL, alpha = FALSE) {
   ## Prepare data
   data <- augment(x, margin = margin, axes = axes, principal = principal)
-
-  ## Subset
-  if (active & !sup) data <- data[!data$supplementary, , drop = FALSE]
-  if (!active & sup) data <- data[data$supplementary, , drop = FALSE]
   n <- nrow(data)
 
-  ## Highlight
+  ## Reorder
+  ## /!\ see build_results() /!\
+  origin <- get_order(x, margin = margin)
+  if (length(highlight) > 1) {
+    arkhe::assert_length(highlight, n)
+    if (reorder) highlight <- highlight[origin]
+  }
+  if (reorder) {
+    if (length(col) == n) col <- col[origin]
+    if (length(bg) == n) bg <- bg[origin]
+    if (length(pch) == n) pch <- pch[origin]
+    if (length(lty) == n) lty <- lty[origin]
+    if (length(cex) == n) cex <- cex[origin]
+    if (length(lwd) == n) lwd <- lwd[origin]
+  }
+
+  ## Recode
   data$observation <- "active"
   data$observation[data$supplementary] <- "suppl."
+
+  ## Highlight
   if (length(highlight) == 1) {
-    choices <- c("mass", "sum", "contribution", "cos2", "observation")
-    highlight <- match.arg(highlight, choices = choices, several.ok = FALSE)
-    highlight <- data[[highlight]]
+    high <- NULL
+    if (has_extra(x)) {
+      high <- get_extra(x)[[highlight]]
+    }
+    if (is.null(high)) {
+      choices <- c("mass", "sum", "contribution", "cos2", "observation")
+      highlight <- match.arg(highlight, choices = choices, several.ok = FALSE)
+      high <- data[[highlight]]
+    }
+    highlight <- high
   }
-  if (length(highlight) > 1) arkhe::assert_length(highlight, n)
 
   ## Graphical parameters
   ## Colors
   col <- scale_color(x = highlight, col = col, alpha = alpha)
   bg <- scale_color(x = highlight, col = bg, alpha = alpha)
+
+  if (length(pch) == 1) pch <- rep(pch, length.out = n)
+  if (length(lty) == 1) lty <- rep(lty, length.out = n)
+  if (length(cex) == 1) cex <- rep(cex, length.out = n)
+  if (length(lwd) == 1) lwd <- rep(lwd, length.out = n)
   if (!is.double(highlight)) { # Discrete scales
     ## Symbol
-    if (length(pch) == 1) pch <- rep(pch, length.out = n)
     pch <- scale_symbol(x = highlight, symb = pch, what = "pch")
-    ## Size
-    cex <- cex %||% graphics::par("cex")
     ## Line type
     lty <- scale_symbol(x = highlight, symb = lty, what = "lty")
+    ## Size
+    cex <- cex %||% graphics::par("cex")
     ## Line width
     lwd <- lwd %||% graphics::par("lwd")
   } else { # Continuous scales
     ## Symbol
     pch <- pch %||% graphics::par("pch")
-    ## Size
-    cex <- scale_size(x = highlight, size = cex, what = "cex")
     ## Line type
     lty <- lty %||% graphics::par("lty")
+    ## Size
+    cex <- scale_size(x = highlight, size = cex, what = "cex")
     ## Line width
     lwd <- scale_size(x = highlight, size = lwd, what = "lwd")
   }
 
-  data.frame(
+  coord <- data.frame(
     x = data[[1]],
     y = data[[2]],
     z = highlight %||% character(n),
     label = data$label,
+    sup = data$supplementary,
     col = col,
     bg = bg,
     pch = pch,
@@ -207,6 +233,12 @@ prepare <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
     lty = lty,
     lwd = lwd
   )
+
+  ## Subset
+  if (active & !sup) coord <- coord[!coord$sup, , drop = FALSE]
+  if (!active & sup) coord <- coord[coord$sup, , drop = FALSE]
+
+  coord
 }
 
 #' Build a Legend
@@ -221,7 +253,7 @@ prepare <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
 #' @keywords internal
 prepare_legend <- function(x, args, points = TRUE, lines = TRUE) {
   h <- x$z
-
+  h <- h[!is.na(h)]
   if (!is.null(h) && length(unique(h)) > 1 && is.list(args) && length(args) > 0) {
     if (is.double(h)) {
       ## Continuous scale
@@ -265,10 +297,11 @@ prepare_legend <- function(x, args, points = TRUE, lines = TRUE) {
 }
 
 scale_color <- function(x, col = NULL, alpha = FALSE) {
-  if (is.null(x)) {
+  if (is.null(x) || all(is.na(x))) {
     col <- col %||% graphics::par("col")
     return(col)
   }
+  if (length(col) == length(x)) return(col)
 
   if (is.double(x)) {
     ## Continuous scale
@@ -282,18 +315,20 @@ scale_color <- function(x, col = NULL, alpha = FALSE) {
   col
 }
 scale_symbol <- function(x, symb = NULL, what = "pch") {
-  if (is.null(x)) {
+  if (is.null(x) || all(is.na(x))) {
     symb <- symb %||% graphics::par(what)
     return(symb)
   }
+  if (length(symb) == length(x)) return(symb)
 
   arkhe::palette_shape(x = x, palette = symb)
 }
 scale_size <- function(x, size = NULL, what = "cex") {
-  if (is.null(x)) {
+  if (is.null(x) || all(is.na(x))) {
     size <- size %||% graphics::par(what)
     return(size)
   }
+  if (length(size) == length(x)) return(size)
 
   arkhe::palette_size(x = x, palette = size)
 }
