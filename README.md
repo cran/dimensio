@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/tesselle/dimensio/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/dimensio/actions)
 [![codecov](https://codecov.io/gh/tesselle/dimensio/branch/main/graph/badge.svg?token=0mcb7gbZu3)](https://app.codecov.io/gh/tesselle/dimensio)
 [![CodeFactor](https://www.codefactor.io/repository/github/tesselle/dimensio/badge/main)](https://www.codefactor.io/repository/github/tesselle/dimensio/overview/main)
-[![Dependencies](https://tinyverse.netlify.com/badge/dimensio)](https://cran.r-project.org/package=dimensio)
+[![Dependencies](https://tinyverse.netlify.app/badge/dimensio)](https://cran.r-project.org/package=dimensio)
 
 <a href="https://tesselle.r-universe.dev/dimensio"
 class="pkgdown-devel"><img
@@ -51,28 +51,17 @@ as [**FactoMineR**](http://factominer.free.fr/),
 is designed to be as simple as possible, providing all the necessary
 tools to explore the results of the analysis.
 
-    To cite dimensio in publications use:
+------------------------------------------------------------------------
 
-      Frerebeau N (2024). _dimensio: Multivariate Data Analysis_.
-      Université Bordeaux Montaigne, Pessac, France.
-      doi:10.5281/zenodo.4478530 <https://doi.org/10.5281/zenodo.4478530>,
-      R package version 0.7.0, <https://packages.tesselle.org/dimensio/>.
+To cite dimensio in publications use:
 
-    A BibTeX entry for LaTeX users is
+Frerebeau N (2024). *dimensio: Multivariate Data Analysis*. Université
+Bordeaux Montaigne, Pessac, France. <doi:10.5281/zenodo.4478530>
+<https://doi.org/10.5281/zenodo.4478530>, R package version 0.8.0,
+<https://packages.tesselle.org/dimensio/>.
 
-      @Manual{R-dimensio,
-        author = {Nicolas Frerebeau},
-        title = {{dimensio: Multivariate Data Analysis}},
-        year = {2024},
-        organization = {Université Bordeaux Montaigne},
-        address = {Pessac, France},
-        note = {R package version 0.7.0},
-        doi = {10.5281/zenodo.4478530},
-        url = {https://packages.tesselle.org/dimensio/},
-      }
-
-    This package is a part of the tesselle project
-    <https://www.tesselle.org>.
+This package is a part of the tesselle project
+<https://www.tesselle.org>.
 
 ## Installation
 
@@ -94,7 +83,7 @@ remotes::install_github("tesselle/dimensio")
 
 ``` r
 ## Install extra packages (if needed)
-# install.packages("khroma")
+# install.packages("khroma") # Color schemes
 
 ## Load packages
 library(dimensio)
@@ -156,24 +145,24 @@ biplot(X, type = "form")
 viz_individuals(
   x = X, 
   highlight = iris$Species, 
-  col = khroma::color("high contrast")(3), 
-  pch = 16
+  symbol = 16,
+  color = c("#004488", "#DDAA33", "#BB5566")
 )
 ## Add ellipses
 viz_tolerance(
   x = X, 
   group = iris$Species, 
   level = 0.95,
-  border = khroma::color("high contrast")(3)
+  border = c("#004488", "#DDAA33", "#BB5566")
 )
 
 ## Highlight petal length
 viz_individuals(
   x = X,
   highlight = iris$Petal.Length,
-  col = khroma::color("iridescent")(255), 
-  cex = c(1, 2),
-  pch = 16
+  color = khroma::color("iridescent")(255), 
+  size = c(1, 2),
+  symbol = 16
 )
 ```
 

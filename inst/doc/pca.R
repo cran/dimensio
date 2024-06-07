@@ -30,21 +30,21 @@ screeplot(X, cumulative = TRUE)
 viz_contributions(X, margin = 2, axes = c(1, 2))
 
 ## ----biplot-rows--------------------------------------------------------------
-biplot(X, type = "form", label = "variables")
+biplot(X, type = "form", labels = "variables")
 
 ## ----biplot-columns-----------------------------------------------------------
-biplot(X, type = "covariance", label = "variables")
+biplot(X, type = "covariance", labels = "variables")
 
 ## ----plot-var-----------------------------------------------------------------
 ## Plot variables factor map
 viz_variables(X)
 
-## ----plot-var-cos2------------------------------------------------------------
-## Highlight cos2
+## ----plot-var-contribution----------------------------------------------------
+## Highlight contribution
 viz_variables(
   x = X, 
-  highlight = "cos2", 
-  col = khroma::color("YlOrBr")(4, range = c(0.5, 1)),
+  highlight = "contribution", 
+  color = c("#FB9A29", "#E1640E", "#AA3C03", "#662506"),
   legend = list(x = "bottomleft")
 )
 
@@ -53,41 +53,54 @@ viz_variables(
 viz_individuals(
   x = X,
   highlight = iris$Species,
-  col = khroma::color("bright")(3), # Custom color scale
-  pch = c(15, 16, 17), # Custom symbols
+  color = c("#4477AA", "#EE6677", "#228833"), # Custom color scheme
+  symbol = c(15, 16, 17), # Custom symbols
+  legend = list(x = "bottomright")
+)
+
+## -----------------------------------------------------------------------------
+## Label the 10 individuals with highest cos2
+viz_individuals(
+  x = X,
+  labels = list(how = "cos2", n = 10),
+  highlight = iris$Species,
+  color = c("#4477AA", "#EE6677", "#228833"),
+  symbol = c(15, 16, 17),
   legend = list(x = "bottomright")
 )
 
 ## ----plot-wrap, fig.show='hold', out.width='50%'------------------------------
 ## Add ellipses
-viz_individuals(x = X)
+viz_individuals(x = X, highlight = iris$Species,
+                color = c("#004488", "#DDAA33", "#BB5566"))
 viz_tolerance(x = X, group = iris$Species, level = 0.95,
-              border = khroma::color("high contrast")(3))
+              border = c("#004488", "#DDAA33", "#BB5566"))
 
 ## Add convex hull
-viz_individuals(x = X)
+viz_individuals(x = X, highlight = iris$Species,
+                color = c("#004488", "#DDAA33", "#BB5566"))
 viz_hull(x = X, group = iris$Species, level = 0.95,
-         border = khroma::color("high contrast")(3))
+         border = c("#004488", "#DDAA33", "#BB5566"))
 
 ## ----plot-ind-petal-----------------------------------------------------------
 ## Highlight petal length
 viz_individuals(
   x = X, 
   highlight = iris$Petal.Length,
-  col = khroma::color("YlOrBr")(12), # Custom color scale
-  cex = c(1, 2), # Custom size scale
-  pch = 16,
+  color = khroma::color("YlOrBr")(12), # Custom color scale
+  size = c(1, 2), # Custom size scale
+  symbol = 16,
   legend = list(x = "bottomleft")
 )
 
-## ----plot-ind-contrib---------------------------------------------------------
+## ----plot-ind-cos2------------------------------------------------------------
 ## Highlight contributions
 viz_individuals(
   x = X, 
-  highlight = "contrib",
-  col = khroma::color("iridescent")(12), # Custom color scale
-  cex = c(1, 2), # Custom size scale
-  pch = 16,
+  highlight = "cos2",
+  color = khroma::color("iridescent")(12), # Custom color scale
+  size = c(1, 2), # Custom size scale
+  symbol = 16,
   legend = list(x = "bottomleft")
 )
 
