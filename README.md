@@ -16,7 +16,7 @@ src="https://tesselle.r-universe.dev/badges/dimensio"
 alt="r-universe" /></a>
 <a href="https://cran.r-project.org/package=dimensio"
 class="pkgdown-release"><img
-src="http://www.r-pkg.org/badges/version/dimensio"
+src="https://www.r-pkg.org/badges/version/dimensio"
 alt="CRAN Version" /></a> <a
 href="https://cran.r-project.org/web/checks/check_results_dimensio.html"
 class="pkgdown-release"><img
@@ -24,7 +24,7 @@ src="https://badges.cranchecks.info/worst/dimensio.svg"
 alt="CRAN checks" /></a>
 <a href="https://cran.r-project.org/package=dimensio"
 class="pkgdown-release"><img
-src="http://cranlogs.r-pkg.org/badges/dimensio"
+src="https://cranlogs.r-pkg.org/badges/dimensio"
 alt="CRAN Downloads" /></a>
 
 [![Project Status: Active – The project has reached a stable, usable
@@ -57,7 +57,7 @@ To cite dimensio in publications use:
 
 Frerebeau N (2024). *dimensio: Multivariate Data Analysis*. Université
 Bordeaux Montaigne, Pessac, France. <doi:10.5281/zenodo.4478530>
-<https://doi.org/10.5281/zenodo.4478530>, R package version 0.8.1,
+<https://doi.org/10.5281/zenodo.4478530>, R package version 0.9.0,
 <https://packages.tesselle.org/dimensio/>.
 
 This package is a part of the tesselle project
@@ -141,7 +141,7 @@ biplot(X, type = "form")
 ## Highlight species
 viz_individuals(
   x = X, 
-  highlight = iris$Species, 
+  extra_quali = iris$Species, 
   color = c("#004488", "#DDAA33", "#BB5566")
 )
 ## Add ellipses
@@ -155,9 +155,9 @@ viz_tolerance(
 ## Highlight petal length
 viz_individuals(
   x = X,
-  highlight = iris$Petal.Length,
-  color = khroma::color("iridescent")(255), 
-  size = c(1, 2),
+  extra_quanti = iris$Petal.Length,
+  color = color("iridescent")(255), 
+  size = c(1, 2)
 )
 ```
 
@@ -178,3 +178,70 @@ screeplot(X, eigenvalues = FALSE, cumulative = TRUE)
 Please note that the **dimensio** project is released with a
 [Contributor Code of Conduct](https://www.tesselle.org/conduct.html). By
 contributing to this project, you agree to abide by its terms.
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+
+<div id="ref-aitchison2002" class="csl-entry">
+
+Aitchison, John, and Michael Greenacre. 2002. “Biplots of Compositional
+Data.” *Journal of the Royal Statistical Society: Series C (Applied
+Statistics)* 51 (4): 375–92. <https://doi.org/10.1111/1467-9876.00275>.
+
+</div>
+
+<div id="ref-gower1966" class="csl-entry">
+
+Gower, J. C. 1966. “Some Distance Properties of Latent Root and Vector
+Methods Used in Multivariate Analysis.” *Biometrika* 53 (3-4): 325–38.
+<https://doi.org/10.1093/biomet/53.3-4.325>.
+
+</div>
+
+<div id="ref-greenacre1984" class="csl-entry">
+
+Greenacre, Michael J. 1984. *Theory and Applications of Correspondence
+Analysis*. London ; Orlando, Fla: Academic Press.
+
+</div>
+
+<div id="ref-greenacre2007" class="csl-entry">
+
+———. 2007. *Correspondence Analysis in Practice*. Seconde edition.
+Interdisciplinary Statistics Series. Boca Raton: Chapman & Hall/CRC.
+
+</div>
+
+<div id="ref-greenacre2010" class="csl-entry">
+
+———. 2010. *Biplots in Practice*. Bilbao: Fundación BBVA.
+
+</div>
+
+<div id="ref-lebart2006" class="csl-entry">
+
+Lebart, Ludovic, Marie Piron, and Alain Morineau. 2006. *Statistique
+exploratoire multidimensionnelle : Visualisations et inférences en
+fouilles de données*.
+
+</div>
+
+<div id="ref-lockyear2013" class="csl-entry">
+
+Lockyear, Kris. 2013. “Applying Bootstrapped Correspondence Analysis to
+Archaeological Data.” *Journal of Archaeological Science* 40 (12):
+4744–53. <https://doi.org/10.1016/j.jas.2012.08.035>.
+
+</div>
+
+<div id="ref-ringrose1992" class="csl-entry">
+
+Ringrose, T. J. 1992. “Bootstrapping and Correspondence Analysis in
+Archaeology.” *Journal of Archaeological Science* 19 (6): 615–29.
+<https://doi.org/10.1016/0305-4403(92)90032-X>.
+
+</div>
+
+</div>

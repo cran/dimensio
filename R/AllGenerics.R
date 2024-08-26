@@ -211,6 +211,32 @@ setGeneric(
   valueClass = "PCA"
 )
 
+# PCoA =========================================================================
+#' Principal Coordinates Analysis
+#'
+#' Computes classical (metric) multidimensional scaling.
+#' @param object A [distance structure][stats::dist()].
+#' @param rank An [`integer`] value specifying the maximal number dimension of
+#'  the space which the data are to be represented in.
+#' @param ... Currently not used.
+#' @return
+#'  A [`PCOA-class`] object.
+#' @references
+#'  Gower, J. C. (1966). Some Distance Properties of Latent Root and Vector
+#'  Methods Used in Multivariate Analysis. *Biometrika*, 53(3‑4): 325-338.
+#'  \doi{10.1093/biomet/53.3-4.325}.
+#' @example inst/examples/ex-pcoa.R
+#' @seealso [stats::cmdscale()]
+#' @author N. Frerebeau
+#' @docType methods
+#' @family multivariate analysis
+#' @aliases pcoa-method
+setGeneric(
+  name = "pcoa",
+  def = function(object, ...) standardGeneric("pcoa"),
+  valueClass = "PCOA"
+)
+
 # Predict ======================================================================
 #' Predict New Coordinates
 #'
@@ -274,7 +300,7 @@ NULL
 #'  Returns a [`data.frame`] of original data.
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutators
+#' @family getters
 #' @aliases get_data-method
 setGeneric(
   name = "get_data",
@@ -303,7 +329,7 @@ setGeneric(
 #' @example inst/examples/ex-coordinates.R
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutators
+#' @family getters
 #' @aliases get_coordinates-method
 setGeneric(
   name = "get_coordinates",
@@ -334,12 +360,15 @@ setGeneric(
 #'  * `get_eigenvalues()` returns a [`data.frame`] with the following columns:
 #'    `eigenvalues`, `variance` (percentage of variance) and `cumulative`
 #'    (cumulative percentage of variance).
-#'  * `get_variance()` returns a [`numeric`] vector giving the percentage of
-#'    explained variance of each dimension.
-#'  * `get_inertia()` returns a [`numeric`] vector.
+#'  * `get_variance()` returns a [`numeric`] vector giving the amount of
+#'    variance explained by each (principal) component.
+#'  * `get_distance()`returns a [`numeric`] vector of squared distance to the
+#'    centroid.
+#'  * `get_inertia()` returns a [`numeric`] vector giving the inertia (weighted
+#'    squared distance to the centroid).
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutators
+#' @family getters
 #' @aliases get_eigenvalues-method
 setGeneric(
   name = "get_eigenvalues",
@@ -348,18 +377,26 @@ setGeneric(
 )
 
 #' @rdname get_eigenvalues
-#' @aliases get_inertia-method
-setGeneric(
-  name = "get_inertia",
-  def = function(x, ...) standardGeneric("get_inertia"),
-  valueClass = "numeric"
-)
-
-#' @rdname get_eigenvalues
 #' @aliases get_variance-method
 setGeneric(
   name = "get_variance",
   def = function(x, ...) standardGeneric("get_variance"),
+  valueClass = "numeric"
+)
+
+#' @rdname get_eigenvalues
+#' @aliases get_distances-method
+setGeneric(
+  name = "get_distances",
+  def = function(x, ...) standardGeneric("get_distances"),
+  valueClass = "numeric"
+)
+
+#' @rdname get_eigenvalues
+#' @aliases get_inertia-method
+setGeneric(
+  name = "get_inertia",
+  def = function(x, ...) standardGeneric("get_inertia"),
   valueClass = "numeric"
 )
 
@@ -378,7 +415,7 @@ setGeneric(
 #'  * `get_contributions()` returns a [`data.frame`] of contributions to the
 #'    definition of the principal dimensions.
 #'  * `get_correlations()` returns a [`data.frame`] of correlations between
-#'    variables and dimensions (`PCA`). An extra column (named after `sup_name`)
+#'    variables and dimensions. An extra column (named after `sup_name`)
 #'    is added specifying whether an observation is a supplementary point or
 #'    not.
 #'  * `get_cos2()` returns a [`data.frame`] of \eqn{cos^2}{cos2} values (i.e.
@@ -387,7 +424,7 @@ setGeneric(
 #'    is a supplementary point or not.
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutators
+#' @family getters
 #' @aliases get_contributions-method
 setGeneric(
   name = "get_contributions",
@@ -411,28 +448,19 @@ setGeneric(
   valueClass = "data.frame"
 )
 
-## Distances -------------------------------------------------------------------
-#' Get Distances
+# Plot =========================================================================
+#' Plot Coordinates
 #'
-#' @param x An object from which to get element(s) (a [`CA-class`],
-#'  [`MCA-class`] or [`PCA-class`] object).
-#' @param margin A length-one [`numeric`] vector giving the subscript which the
-#'  data will be returned: `1` indicates individuals/rows (the default), `2`
-#'  indicates variables/columns.
-#' @param ... Currently not used.
-#' @return
-#'  A [`numeric`] vector of squared distance to the centroide.
+#' @param x An \R object.
+#' @param ... Further [graphical parameters][graphics::par].
+#' @inheritParams viz_points
 #' @author N. Frerebeau
 #' @docType methods
-#' @family mutators
-#' @aliases get_distances-method
-setGeneric(
-  name = "get_distances",
-  def = function(x, ...) standardGeneric("get_distances"),
-  valueClass = "numeric"
-)
+#' @family plot methods
+#' @name plot
+#' @rdname plot
+NULL
 
-# Plot =========================================================================
 ## Biplot ----------------------------------------------------------------------
 #' Biplot
 #'
@@ -464,7 +492,7 @@ setGeneric(
 #' @param legend A [`list`] of additional arguments to be passed to
 #'  [graphics::legend()]; names of the list are used as argument names.
 #'  If `NULL`, no legend is displayed.
-#' @inheritParams prepare
+#' @inheritParams prepare_plot
 #' @param ... Currently not used.
 #' @details
 #'  A biplot is the simultaneous representation of rows and columns of a
@@ -527,12 +555,10 @@ NULL
 #'
 #' Plots row/individual principal coordinates.
 #' @inheritParams viz_points
-#' @param ... Further [graphical parameters][graphics::par] (see details).
+#' @param ... Further [graphical parameters][graphics::par].
 #' @return
 #'  `viz_*()` is called for its side-effects: it results in a graphic
 #'  being displayed. Invisibly returns `x`.
-#' @section Aesthetics:
-#'  TBD
 #' @example inst/examples/ex-plot.R
 #' @author N. Frerebeau
 #' @docType methods
@@ -554,7 +580,7 @@ setGeneric(
 #'
 #' Plots column/variable principal coordinates.
 #' @inheritParams viz_points
-#' @inheritSection viz_individuals Aesthetics
+#' @param ... Further [graphical parameters][graphics::par].
 #' @return
 #'  `viz_*()` is called for its side-effects: it results in a graphic
 #'  being displayed. Invisibly returns `x`.
@@ -667,8 +693,7 @@ setGeneric(
 #'  indicates variables/columns.
 #' @param axes A length-two [`numeric`] vector giving the dimensions
 #'  for which to compute results.
-#' @param group A vector specifying the group an observation belongs to, or a
-#'  single `character` string giving the name of a categorical variable.
+#' @param group A vector specifying the group an observation belongs to.
 #' @param level A [`numeric`] vector specifying the confidence/tolerance level.
 #' @param ... Currently not used.
 #' @return

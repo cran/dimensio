@@ -3,17 +3,25 @@
 NULL
 
 # Non exported =================================================================
+is_centered <- function(x) {
+  !all(x@center == 0)
+}
+is_scaled <- function(x) {
+  !all(x@scale == 1)
+}
+
+has_supplementary <- function(x, margin = 1) {
+  margin <- margin[[1L]]
+  if (margin == 1) supp <- any(x@rows@supplement)
+  if (margin == 2) supp <- any(x@columns@supplement)
+  supp
+}
+
 get_masses <- function(x, margin = 1) {
   margin <- margin[[1L]]
   if (margin == 1) mass <- x@rows@weights
   if (margin == 2) mass <- x@columns@weights
   mass
-}
-get_groups <- function(x, margin = 1) {
-  margin <- margin[[1L]]
-  if (margin == 1) grp <- x@rows@groups
-  if (margin == 2) grp <- x@columns@groups
-  grp
 }
 get_order <- function(x, margin = 1) {
   margin <- margin[[1L]]
@@ -38,6 +46,30 @@ has_extra <- function(x) {
   methods::validObject(x)
   x
 }
+# Groups =======================================================================
+get_groups <- function(x, margin = 1) {
+  margin <- margin[[1L]]
+  if (margin == 1) grp <- x@rows@groups
+  if (margin == 2) grp <- x@columns@groups
+  grp
+}
+
+`set_groups<-` <- function(x, margin = 1, value) {
+  if (is.null(value)) value <- character(0)
+  margin <- margin[[1L]]
+  if (margin == 1) x@rows@groups <- value
+  if (margin == 2) x@columns@groups <- value
+  methods::validObject(x)
+  x
+}
+
+has_groups <- function(x, margin = 1) {
+  margin <- margin[[1L]]
+  if (margin == 1) grp <- x@rows@groups
+  if (margin == 2) grp <- x@columns@groups
+  length(grp) > 0
+}
+
 # Dimensions ===================================================================
 #' @export
 #' @method dim MultivariateAnalysis

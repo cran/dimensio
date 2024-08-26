@@ -1,3 +1,13 @@
+# dimensio 0.9.0
+## New classes and methods
+* Add `pcoa()` to compute principal coordinates analysis.
+
+## Enhancements
+* Allow to display extra qualitative and quantitative variables in `viz_rows()`/`viz_individuals()` and `viz_columns()`/`viz_variables()`.
+
+## Bugfixes & changes
+* Deprecate `hightlight` argument of `viz_rows()`/`viz_individuals()` and `viz_columns()`/`viz_variables()`.
+
 # dimensio 0.8.1
 ## Internals
 * Use palette functions from **khroma**.

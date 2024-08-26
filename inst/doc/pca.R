@@ -43,7 +43,7 @@ viz_variables(X)
 ## Highlight contribution
 viz_variables(
   x = X, 
-  highlight = "contribution", 
+  extra_quanti = "contribution", 
   color = c("#FB9A29", "#E1640E", "#AA3C03", "#662506"),
   legend = list(x = "bottomleft")
 )
@@ -52,18 +52,28 @@ viz_variables(
 ## Plot individuals and color by species
 viz_individuals(
   x = X,
-  highlight = iris$Species,
+  extra_quali = iris$Species,
   color = c("#4477AA", "#EE6677", "#228833"), # Custom color scheme
   symbol = c(15, 16, 17), # Custom symbols
   legend = list(x = "bottomright")
 )
 
-## -----------------------------------------------------------------------------
+## ----plot-ind-highligh--------------------------------------------------------
+## Highlight one species
+viz_individuals(
+  x = X,
+  extra_quali = iris$Species,
+  color = c(versicolor = "black"), # Named vector
+  symbol = c(15, 16, 17), # Custom symbols
+  legend = list(x = "bottomright")
+)
+
+## ----plot-ind-lab-------------------------------------------------------------
 ## Label the 10 individuals with highest cos2
 viz_individuals(
   x = X,
-  labels = list(how = "cos2", n = 10),
-  highlight = iris$Species,
+  labels = list(filter = "cos2", n = 10),
+  extra_quali = iris$Species,
   color = c("#4477AA", "#EE6677", "#228833"),
   symbol = c(15, 16, 17),
   legend = list(x = "bottomright")
@@ -71,13 +81,13 @@ viz_individuals(
 
 ## ----plot-wrap, fig.show='hold', out.width='50%'------------------------------
 ## Add ellipses
-viz_individuals(x = X, highlight = iris$Species,
+viz_individuals(x = X, extra_quali = iris$Species,
                 color = c("#004488", "#DDAA33", "#BB5566"))
 viz_tolerance(x = X, group = iris$Species, level = 0.95,
               border = c("#004488", "#DDAA33", "#BB5566"))
 
 ## Add convex hull
-viz_individuals(x = X, highlight = iris$Species,
+viz_individuals(x = X, extra_quali = iris$Species,
                 color = c("#004488", "#DDAA33", "#BB5566"))
 viz_hull(x = X, group = iris$Species, level = 0.95,
          border = c("#004488", "#DDAA33", "#BB5566"))
@@ -86,8 +96,8 @@ viz_hull(x = X, group = iris$Species, level = 0.95,
 ## Highlight petal length
 viz_individuals(
   x = X, 
-  highlight = iris$Petal.Length,
-  color = khroma::color("YlOrBr")(12), # Custom color scale
+  extra_quanti = iris$Petal.Length,
+  color = color("YlOrBr")(12), # Custom color scale
   size = c(1, 2), # Custom size scale
   legend = list(x = "bottomleft")
 )
@@ -96,8 +106,8 @@ viz_individuals(
 ## Highlight contributions
 viz_individuals(
   x = X, 
-  highlight = "cos2",
-  color = khroma::color("iridescent")(12), # Custom color scale
+  extra_quanti = "cos2",
+  color = color("iridescent")(12), # Custom color scale
   size = c(1, 2), # Custom size scale
   legend = list(x = "bottomleft")
 )

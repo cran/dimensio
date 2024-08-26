@@ -24,8 +24,10 @@ viz_columns(x, ...)
   active = TRUE,
   sup = TRUE,
   labels = FALSE,
-  highlight = NULL,
+  extra_quali = NULL,
+  extra_quanti = NULL,
   color = NULL,
+  fill = FALSE,
   symbol = FALSE,
   size = c(1, 6),
   xlim = NULL,
@@ -37,7 +39,14 @@ viz_columns(x, ...)
   legend = list(x = "topleft")
 )
 
-\S4method{viz_columns}{MultivariateBootstrap}(x, ..., axes = c(1, 2), color = FALSE, symbol = FALSE)
+\S4method{viz_columns}{MultivariateBootstrap}(
+  x,
+  ...,
+  axes = c(1, 2),
+  color = FALSE,
+  fill = FALSE,
+  symbol = FALSE
+)
 
 \S4method{viz_variables}{PCA}(
   x,
@@ -45,8 +54,9 @@ viz_columns(x, ...)
   axes = c(1, 2),
   active = TRUE,
   sup = TRUE,
-  labels = list(how = "contribution", n = 10),
-  highlight = NULL,
+  labels = list(filter = "contribution", n = 10),
+  extra_quali = NULL,
+  extra_quanti = NULL,
   color = NULL,
   symbol = NULL,
   size = 1,
@@ -66,8 +76,10 @@ viz_columns(x, ...)
   active = TRUE,
   sup = TRUE,
   labels = FALSE,
-  highlight = NULL,
+  extra_quali = NULL,
+  extra_quanti = NULL,
   color = NULL,
+  fill = FALSE,
   symbol = FALSE,
   size = c(1, 6),
   xlim = NULL,
@@ -79,12 +91,19 @@ viz_columns(x, ...)
   legend = list(x = "topleft")
 )
 
-\S4method{viz_variables}{BootstrapPCA}(x, ..., axes = c(1, 2), color = FALSE, symbol = FALSE)
+\S4method{viz_variables}{BootstrapPCA}(
+  x,
+  ...,
+  axes = c(1, 2),
+  color = FALSE,
+  fill = FALSE,
+  symbol = FALSE
+)
 }
 \arguments{
 \item{x}{A \code{\linkS4class{CA}}, \code{\linkS4class{MCA}} or \code{\linkS4class{PCA}} object.}
 
-\item{...}{Currently not used.}
+\item{...}{Further \link[graphics:par]{graphical parameters}.}
 
 \item{axes}{A length-two \code{\link{numeric}} vector giving the dimensions to be
 plotted.}
@@ -98,23 +117,35 @@ plotted?}
 \item{labels}{A \code{\link{logical}} scalar: should labels be drawn? Labeling a large
 number of points can be computationally expensive and make the graph
 difficult to read. A selection of points to label can be provided using a
-\code{list} of two named elements, \code{how} (a string specifying how to select the
-labels to be drawn) and \code{n} (an integer specifying the number of labels to
-be drawx). See examples below.}
+\code{list} of two named elements, \code{filter} (a string specifying how to filter
+the labels to be drawn) and \code{n} (an integer specifying the number of labels
+to be drawn). See examples below.}
 
-\item{highlight}{A vector specifying the information to be highlighted.
-If \code{NULL} (the default), no highlighting is applied. If a single \code{character}
-string is passed, it must be the name of a categorical variable, or one of
+\item{extra_quali}{An optional vector of qualitative data for aesthetics
+mapping.}
+
+\item{extra_quanti}{An optional vector of quantitative data for aesthetics
+mapping. If a single \code{\link{character}} string is passed, it must be one of
 "\code{observation}", "\code{mass}", "\code{sum}", "\code{contribution}" or "\code{cos2}"
 (see \code{\link[=augment]{augment()}}).}
 
-\item{color}{The colors for lines and points (will be mapped to \code{highlight}).
+\item{color}{The colors for lines and points (will be mapped to
+\code{extra_quanti} or \code{extra_quali}; if both are set, the latter has priority).
 Ignored if set to \code{FALSE}.}
 
-\item{symbol}{A vector of plotting characters or symbols.}
+\item{fill}{The background colors for points (will be mapped to
+\code{extra_quanti} or \code{extra_quali}; if both are set, the latter has priority).
+Ignored if set to \code{FALSE}.}
+
+\item{symbol}{A vector of plotting characters or symbols (will be mapped to
+\code{extra_quali}). This can either be a single character or an integer code for
+one of a set of graphics symbols. If \code{symbol} is a named a named vector,
+then the symbols will be associated with their name within \code{extra_quali}.
+Ignored if set to \code{FALSE}.}
 
 \item{size}{A length-two \code{\link{numeric}} vector giving range of possible sizes
-(greater than 0; will be mapped to \code{highlight}). Ignored if set to \code{FALSE}.}
+(greater than 0; will be mapped to \code{extra_quanti}).
+Ignored if set to \code{FALSE}.}
 
 \item{xlim}{A length-two \code{\link{numeric}} vector giving the x limits of the plot.
 The default value, \code{NULL}, indicates that the range of the
@@ -146,11 +177,6 @@ being displayed. Invisibly returns \code{x}.
 \description{
 Plots column/variable principal coordinates.
 }
-\section{Aesthetics}{
-
-TBD
-}
-
 \examples{
 ## Load data
 data("iris")
@@ -169,27 +195,28 @@ viz_variables(X, panel.last = graphics::grid())
 
 ## Graphical parameters
 ## Continuous values
-viz_individuals(X, highlight = iris$Petal.Length, symbol = 16, size = c(1, 2))
-viz_individuals(X, highlight = iris$Petal.Length, symbol = 16, size = c(1, 2),
+viz_individuals(X, extra_quanti = iris$Petal.Length, symbol = 16, size = c(1, 2))
+viz_individuals(X, extra_quanti = iris$Petal.Length, symbol = 16, size = c(1, 2),
                 color = grDevices::hcl.colors(12, "RdPu"))
 
-viz_variables(X, highlight = "contribution",
+viz_variables(X, extra_quanti = "contribution",
               color = grDevices::hcl.colors(12, "BluGrn", rev = TRUE),
               size = c(0, 1))
 
 ## Discrete values
-viz_individuals(X, highlight = iris$Species, symbol = 21:23)
-viz_individuals(X, highlight = iris$Species, symbol = 21:23,
+viz_individuals(X, extra_quali = iris$Species, symbol = 21:23)
+viz_individuals(X, extra_quali = iris$Species, symbol = 21:23,
                 fill = c("#004488", "#DDAA33", "#BB5566"),
                 color = "black")
 
-viz_variables(X, highlight = c("Petal", "Petal", "Sepal", "Sepal"),
+viz_variables(X, extra_quali = c("Petal", "Petal", "Sepal", "Sepal"),
               color = c("#EE7733", "#0077BB"),
               symbol = c(1, 3))
 }
 \seealso{
 Other plot methods: 
 \code{\link{biplot}()},
+\code{\link{plot}()},
 \code{\link{screeplot}()},
 \code{\link{viz_contributions}()},
 \code{\link{viz_individuals}()},

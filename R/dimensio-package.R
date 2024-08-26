@@ -2,7 +2,7 @@
 #' \tabular{ll}{
 #'  **Package:** \tab dimensio \cr
 #'  **Type:** \tab Package \cr
-#'  **Version:** \tab 0.8.1 \cr
+#'  **Version:** \tab 0.9.0 \cr
 #'  **License:** \tab GPL-3 \cr
 #'  **Zenodo:** \tab \doi{10.5281/zenodo.4478530} \cr
 #' }
@@ -37,7 +37,8 @@
 #' @importFrom methods Arith as as<- callGeneric callNextMethod
 #' .hasSlot initialize is new setClass setClassUnion
 #' setGeneric setMethod slot slot<- slotNames validObject .valueClassTest
-#' @importFrom stats aggregate approx cov na.omit qchisq qf rmultinom runif
+#' @importFrom stats aggregate approx cmdscale cov na.omit qchisq qf rmultinom
+#' runif
 #' @importFrom utils capture.output modifyList stack tail
 NULL
 
