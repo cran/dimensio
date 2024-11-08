@@ -57,7 +57,7 @@ To cite dimensio in publications use:
 
 Frerebeau N (2024). *dimensio: Multivariate Data Analysis*. Université
 Bordeaux Montaigne, Pessac, France. <doi:10.5281/zenodo.4478530>
-<https://doi.org/10.5281/zenodo.4478530>, R package version 0.9.0,
+<https://doi.org/10.5281/zenodo.4478530>, R package version 0.10.0,
 <https://packages.tesselle.org/dimensio/>.
 
 This package is a part of the tesselle project
@@ -149,7 +149,7 @@ viz_tolerance(
   x = X, 
   group = iris$Species, 
   level = 0.95,
-  border = c("#004488", "#DDAA33", "#BB5566")
+  color = c("#004488", "#DDAA33", "#BB5566")
 )
 
 ## Highlight petal length

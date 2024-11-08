@@ -290,6 +290,24 @@ NULL
 NULL
 
 # Results ======================================================================
+#' Export Results
+#'
+#' Creates a Zip archive of all results in CSV format.
+#' @param object A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
+#' @param file A [`character`] string specifying the pathname of the zip file.
+#' @param flags A [`character`] string of flags (see [utils::zip()]).
+#' @param ... Currently not used.
+#' @example inst/examples/ex-export.R
+#' @seealso [utils::write.csv()], [utils::zip()]
+#' @author N. Frerebeau
+#' @docType methods
+#' @family getters
+#' @aliases export-method
+setGeneric(
+  name = "export",
+  def = function(object, ...) standardGeneric("export")
+)
+
 ### Data -----------------------------------------------------------------------
 #' Get Original Data
 #'
@@ -733,6 +751,12 @@ setGeneric(
 #' Plot Envelopes
 #'
 #' @inheritParams wrap
+#' @param color The colors for borders (will be mapped to `group`).
+#'  Ignored if set to `FALSE`.
+#' @param fill The background colors (will be mapped to `group`).
+#'  Ignored if set to `FALSE`.
+#' @param symbol A vector of symbols (will be mapped to `group`).
+#'  Ignored if set to `FALSE`.
 #' @param ... Further [graphical parameters][graphics::par] to be passed to
 #'  [graphics::polygon()].
 #' @return

@@ -283,7 +283,8 @@ viz_points <- function(x, margin, axes, ...,
   ## Prepare data
   coord <- prepare_plot(x, margin = margin, axes = axes,
                         active = active, sup = sup,
-                        extra_quali = extra_quali, extra_quanti = extra_quanti,
+                        extra_quali = extra_quali,
+                        extra_quanti = extra_quanti,
                         color = color, fill = fill,
                         symbol = symbol, size = size, ...)
 
@@ -364,6 +365,8 @@ viz_points <- function(x, margin, axes, ...,
 #'  It must be one of "`text`", "`shadow`" or "`box`". Any unambiguous substring
 #'  can be given.
 #' @param ... Currently not used.
+#' @details
+#'  Only labels in the plotting region (given by `par("usr")`) will be drawn.
 #' @author N. Frerebeau
 #' @keywords internal
 viz_labels <- function(x, filter = "contribution", n = 10,
@@ -375,6 +378,14 @@ viz_labels <- function(x, filter = "contribution", n = 10,
     k <- order(how, decreasing = TRUE)[seq_len(top)] # Get order
     x <- x[k, , drop = FALSE] # Subset
   }
+
+  ## Filter
+  xlim <- graphics::par("usr")[c(1, 2)]
+  ylim <- graphics::par("usr")[c(3, 4)]
+  x_filter <- x$x >= min(xlim) & x$x <= max(xlim)
+  y_filter <- x$y >= min(ylim) & x$y <= max(ylim)
+  xy_filter <- which(x_filter & y_filter)
+  x <- x[xy_filter, , drop = FALSE]
 
   label(
     x = x$x,
@@ -453,6 +464,13 @@ prepare_plot <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
                          color = NULL, fill = FALSE,
                          symbol = NULL, size = c(1, 6),
                          line_type = NULL, line_width = size) {
+  ## Validation
+  arkhe::assert_scalar(margin, "numeric")
+  arkhe::assert_type(axes, "numeric")
+  arkhe::assert_length(axes, 2)
+  arkhe::assert_scalar(sup, "logical")
+  arkhe::assert_scalar(principal, "logical")
+
   ## /!\ Backward compatibility /!\
   high <- list(...)$highlight
   if (length(high) == 1) {
@@ -482,6 +500,8 @@ prepare_plot <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
     extra_quanti <- data[[extra_quanti]]
   }
   if (length(extra_quanti) > 0) {
+    extra_quanti <- as.vector(extra_quanti)
+    arkhe::assert_type(extra_quanti, "numeric")
     arkhe::assert_length(extra_quanti, n)
     ## Continuous scales
     if (!isFALSE(color)) col <- khroma::palette_color_continuous(colors = color)(extra_quanti)
@@ -502,6 +522,7 @@ prepare_plot <- function(x, margin, ..., axes = c(1, 2), active = TRUE,
     extra_quali <- data[[extra_quali]]
   }
   if (!isFALSE(extra_quali) && length(extra_quali) > 0) {
+    extra_quali <- as.vector(extra_quali)
     arkhe::assert_length(extra_quali, n)
     ## Discrete scales
     if (!isFALSE(color)) col <- khroma::palette_color_discrete(colors = color)(extra_quali)

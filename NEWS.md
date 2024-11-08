@@ -1,3 +1,12 @@
+# dimensio 0.10.0
+## New classes and methods
+* Add `export()` to create a Zip archive of all results in CSV format.
+
+## Internals
+* Translate into French.
+* Compute the position and draw only the labels in the plotting region.
+* Add type checking of arguments.
+
 # dimensio 0.9.0
 ## New classes and methods
 * Add `pcoa()` to compute principal coordinates analysis.
