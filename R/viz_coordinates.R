@@ -33,10 +33,10 @@ setMethod(
   f = "viz_rows",
   signature = c(x = "BootstrapCA"),
   definition = function(x, ..., axes = c(1, 2), color = FALSE, fill = FALSE,
-                        symbol = FALSE) {
+                        symbol = FALSE, legend = NULL) {
     viz_points(x, margin = 1, axes = axes, ..., active = TRUE, sup = TRUE,
                labels = FALSE, extra_quali = NULL,
-               color = color, fill = fill, symbol = symbol)
+               color = color, fill = fill, symbol = symbol, legend = legend)
     invisible(x)
   }
 )
@@ -96,10 +96,10 @@ setMethod(
   f = "viz_columns",
   signature = c(x = "MultivariateBootstrap"),
   definition = function(x, ..., axes = c(1, 2), color = FALSE, fill = FALSE,
-                        symbol = FALSE) {
+                        symbol = FALSE, legend = NULL) {
     viz_points(x, ..., margin = 2, axes = axes, active = TRUE, sup = TRUE,
                labels = FALSE, extra_quali = NULL,
-               color = color, fill = fill, symbol = symbol)
+               color = color, fill = fill, symbol = symbol, legend = legend)
     invisible(x)
   }
 )
@@ -226,10 +226,10 @@ setMethod(
   f = "viz_variables",
   signature = c(x = "BootstrapPCA"),
   definition = function(x, ..., axes = c(1, 2), color = FALSE, fill = FALSE,
-                        symbol = FALSE) {
+                        symbol = FALSE, legend = NULL) {
     viz_points(x, ..., margin = 2, axes = axes, active = TRUE, sup = TRUE,
                labels = FALSE, extra_quali = NULL,
-               color = color, fill = fill, symbol = symbol)
+               color = color, fill = fill, symbol = symbol, legend = legend)
     invisible(x)
   }
 )
@@ -420,7 +420,7 @@ viz_labels <- function(x, filter = "contribution", n = 10,
 #'  (see [`augment()`]).
 #' @param color The colors for lines and points (will be mapped to
 #'  `extra_quanti` or `extra_quali`; if both are set, the latter has priority).
-#'  Ignored if set to `FALSE`.
+#'  Ignored if set to `FALSE`. If `NULL`, the default color scheme will be used.
 #' @param fill The background colors for points (will be mapped to
 #'  `extra_quanti` or `extra_quali`; if both are set, the latter has priority).
 #'  Ignored if set to `FALSE`.

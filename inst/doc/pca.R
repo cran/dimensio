@@ -120,13 +120,13 @@ iris_augment <- augment(X, margin = 1)
 head(iris_augment)
 
 ## ----ggplot2, eval=FALSE------------------------------------------------------
-#  ## Custom plot with ggplot2
-#  ggplot2::ggplot(data = iris_augment) +
-#    ggplot2::aes(x = F1, y = F2, colour = contribution) +
-#    ggplot2::geom_vline(xintercept = 0, linewidth = 0.5, linetype = "dashed") +
-#    ggplot2::geom_hline(yintercept = 0, linewidth = 0.5, linetype = "dashed") +
-#    ggplot2::geom_point() +
-#    ggplot2::coord_fixed() + # /!\
-#    ggplot2::theme_bw() +
-#    khroma::scale_color_iridescent()
+# ## Custom plot with ggplot2
+# ggplot2::ggplot(data = iris_augment) +
+#   ggplot2::aes(x = F1, y = F2, colour = contribution) +
+#   ggplot2::geom_vline(xintercept = 0, linewidth = 0.5, linetype = "dashed") +
+#   ggplot2::geom_hline(yintercept = 0, linewidth = 0.5, linetype = "dashed") +
+#   ggplot2::geom_point() +
+#   ggplot2::coord_fixed() + # /!\
+#   ggplot2::theme_bw() +
+#   khroma::scale_color_iridescent()
 

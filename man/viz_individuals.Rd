@@ -37,7 +37,15 @@ viz_rows(x, ...)
   legend = list(x = "topleft")
 )
 
-\S4method{viz_rows}{BootstrapCA}(x, ..., axes = c(1, 2), color = FALSE, fill = FALSE, symbol = FALSE)
+\S4method{viz_rows}{BootstrapCA}(
+  x,
+  ...,
+  axes = c(1, 2),
+  color = FALSE,
+  fill = FALSE,
+  symbol = FALSE,
+  legend = NULL
+)
 
 \S4method{viz_individuals}{PCA}(
   x,
@@ -92,7 +100,7 @@ mapping. If a single \code{\link{character}} string is passed, it must be one of
 
 \item{color}{The colors for lines and points (will be mapped to
 \code{extra_quanti} or \code{extra_quali}; if both are set, the latter has priority).
-Ignored if set to \code{FALSE}.}
+Ignored if set to \code{FALSE}. If \code{NULL}, the default color scheme will be used.}
 
 \item{fill}{The background colors for points (will be mapped to
 \code{extra_quanti} or \code{extra_quali}; if both are set, the latter has priority).

@@ -541,7 +541,8 @@ NULL
 #'   \item{`symetric` (symetric biplot)}{Represents the row and column profiles
 #'   simultaneously in a common space: rows and columns are in standard
 #'   coordinates. Note that the the inter-distance between any row and column
-#'   items is not meaningful.}
+#'   items is not meaningful (i.e. the proximity between rows and columns cannot
+#'   be directly interpreted).}
 #'   \item{`rows` (asymetric biplot)}{Row principal biplot (row-metric-preserving)
 #'   with rows in principal coordinates and columns in standard coordinates.}
 #'   \item{`columns` (asymetric biplot)}{Column principal biplot
@@ -752,7 +753,7 @@ setGeneric(
 #'
 #' @inheritParams wrap
 #' @param color The colors for borders (will be mapped to `group`).
-#'  Ignored if set to `FALSE`.
+#'  Ignored if set to `FALSE`. If `NULL`, the default color scheme will be used.
 #' @param fill The background colors (will be mapped to `group`).
 #'  Ignored if set to `FALSE`.
 #' @param symbol A vector of symbols (will be mapped to `group`).
