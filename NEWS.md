@@ -1,3 +1,17 @@
+# dimensio 0.11.0
+## New classes and methods
+* Add `describe()` to quickly describe a `MultivariateAnalysis` object.
+* Add `viz_ellipses()` to draw tolerance/confidence ellipses.
+
+## Enhancements
+* `viz_rows()` and `viz_individuals()` gained a new `ellipse` argument to draw tolerance/confidence ellipses.
+* `viz_rows()` and `viz_individuals()` gained a new `hull` argument to draw convex hulls.
+* `ca()`, `mca()` and `pca()` gained a new `autodetect` argument to enable/disable automatic of numeric variables.
+
+## Bugfixes & changes
+* Numeric variables are no longer automatically detected by default in `ca()`, `mca()` and `pca()`.
+* Remove `loadings()`.
+
 # dimensio 0.10.1
 ## Bugfixes & changes
 * Fix ellipses default border color.

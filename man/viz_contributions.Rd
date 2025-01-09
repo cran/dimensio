@@ -91,7 +91,7 @@ in contributing to the component).
 data("iris")
 
 ## Compute principal components analysis
-X <- pca(iris, scale = TRUE)
+X <- pca(iris, scale = TRUE, sup_quali = "Species")
 
 ## Get row contributions
 head(get_contributions(X, margin = 1))
@@ -107,9 +107,9 @@ Other plot methods:
 \code{\link{biplot}()},
 \code{\link{plot}()},
 \code{\link{screeplot}()},
+\code{\link{viz_ellipses}()},
 \code{\link{viz_individuals}()},
 \code{\link{viz_variables}()},
-\code{\link{viz_wrap}},
 \code{\link{wrap}}
 }
 \author{

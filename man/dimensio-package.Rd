@@ -14,11 +14,20 @@ Simple Principal Components Analysis (PCA) and (Multiple) Correspondence Analysi
 \tabular{ll}{
 \strong{Package:} \tab dimensio \cr
 \strong{Type:} \tab Package \cr
-\strong{Version:} \tab 0.10.1 \cr
+\strong{Version:} \tab 0.11.0 \cr
 \strong{License:} \tab GPL-3 \cr
 \strong{Zenodo:} \tab \doi{10.5281/zenodo.4478530} \cr
 }
 }
+\section{Package options}{
+
+\pkg{dimensio} uses the following \code{\link[=options]{options()}} to configure behavior:
+\itemize{
+\item \code{dimensio.verbose}: a \code{\link{logical}} scalar. Should \R report extra
+information on progress? Defaults to \code{\link[=interactive]{interactive()}}.
+}
+}
+
 \seealso{
 Useful links:
 \itemize{

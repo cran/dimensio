@@ -11,27 +11,10 @@ setGeneric("biplot")
 
 # Import S4 generics ===========================================================
 #' @importMethodsFrom arkhe bootstrap
+#' @importMethodsFrom arkhe describe
 NULL
 
 # Extract ======================================================================
-## Get -------------------------------------------------------------------------
-#' Extract Loadings
-#'
-#' Extract loadingsin principal components analysis.
-#' @param x A [`PCA-class`] object.
-#' @param ... Currently not used.
-#' @return
-#'  Returns variable loadings (i.e. the coefficients of the linear combination
-#'  of the original variables).
-#' @note
-#'  `loadings()` is only implemented for consistency with [stats::loadings()].
-#' @author N. Frerebeau
-#' @docType methods
-#' @family mutators
-#' @name loadings
-#' @rdname loadings
-NULL
-
 ## Dimnames --------------------------------------------------------------------
 #' Dimnames of an Object
 #'
@@ -103,13 +86,15 @@ NULL
 #'
 #' Computes a simple correspondence analysis based on the singular value
 #' decomposition.
-#' @param object A \eqn{m \times p}{m x p} numeric [`matrix`] or a
+#' @param object A \eqn{m \times p}{m x p} `numeric` [`matrix`] or a
 #'  [`data.frame`].
 #' @param rank An [`integer`] value specifying the maximal number of
 #'  components to be kept in the results. If `NULL` (the default),
 #'  \eqn{min(m, p) - 1} components will be returned.
 #' @param sup_row A `vector` specifying the indices of the supplementary rows.
 #' @param sup_col A `vector` specifying the indices of the supplementary columns.
+#' @param autodetect A [`logical`] scalar: should non-numeric variables be
+#'  automatically removed?
 #' @param ... Currently not used.
 #' @return
 #'  A [`CA-class`] object.
@@ -139,7 +124,7 @@ setGeneric(
 #' Multiple Correspondence Analysis
 #'
 #' Computes a multiple correspondence analysis.
-#' @param object A \eqn{m \times p}{m x p} numeric [`matrix`] or a
+#' @param object A \eqn{m \times p}{m x p} `numeric` [`matrix`] or a
 #'  [`data.frame`].
 #' @param rank An [`integer`] value specifying the maximal number of
 #'  components to be kept in the results. If `NULL` (the default),
@@ -149,6 +134,8 @@ setGeneric(
 #'  categorical columns.
 #' @param sup_quanti A `vector` specifying the indices of the supplementary
 #'  quantitative columns.
+#' @param autodetect A [`logical`] scalar: should numeric variables be
+#'  automatically removed (except `sup_quanti`)?
 #' @param ... Currently not used.
 #' @return
 #'  A [`MCA-class`] object.
@@ -173,7 +160,7 @@ setGeneric(
 #'
 #' Computes a principal components analysis based on the singular value
 #' decomposition.
-#' @param object A \eqn{m \times p}{m x p} numeric [`matrix`] or a
+#' @param object A \eqn{m \times p}{m x p} `numeric` [`matrix`] or a
 #'  [`data.frame`].
 #' @param center A [`logical`] scalar: should the variables be shifted to be
 #'  zero centered?
@@ -192,6 +179,8 @@ setGeneric(
 #' @param weight_col A [`numeric`] vector specifying the active column
 #'  (variable) weights. If `NULL` (the default), uniform weights (1) are
 #'  used.
+#' @param autodetect A [`logical`] scalar: should non-numeric variables be
+#'  automatically removed (except `sup_quali`)?
 #' @param ... Currently not used.
 #' @return
 #'  A [`PCA-class`] object.
@@ -285,8 +274,8 @@ NULL
 #' @author N. Frerebeau
 #' @docType methods
 #' @family resampling methods
+#' @name bootstrap
 #' @rdname bootstrap
-#' @name boot
 NULL
 
 # Results ======================================================================
@@ -752,6 +741,9 @@ setGeneric(
 #' Plot Envelopes
 #'
 #' @inheritParams wrap
+#' @param type A [`character`] string specifying the ellipse to draw.
+#'  It must be one of "`tolerance`" or "`confidence`").
+#'  Any unambiguous substring can be given.
 #' @param color The colors for borders (will be mapped to `group`).
 #'  Ignored if set to `FALSE`. If `NULL`, the default color scheme will be used.
 #' @param fill The background colors (will be mapped to `group`).
@@ -767,25 +759,27 @@ setGeneric(
 #' @author N. Frerebeau
 #' @docType methods
 #' @family plot methods
-#' @name viz_wrap
-#' @rdname viz_wrap
-NULL
+#' @aliases viz_ellipses-method
+setGeneric(
+  name = "viz_ellipses",
+  def = function(x, ...) standardGeneric("viz_ellipses")
+)
 
-#' @rdname viz_wrap
+#' @rdname viz_ellipses
 #' @aliases viz_hull-method
 setGeneric(
   name = "viz_hull",
   def = function(x, ...) standardGeneric("viz_hull")
 )
 
-#' @rdname viz_wrap
+#' @rdname viz_ellipses
 #' @aliases viz_confidence-method
 setGeneric(
   name = "viz_confidence",
   def = function(x, ...) standardGeneric("viz_confidence")
 )
 
-#' @rdname viz_wrap
+#' @rdname viz_ellipses
 #' @aliases viz_tolerance-method
 setGeneric(
   name = "viz_tolerance",
@@ -797,15 +791,24 @@ setGeneric(
 #'
 #' Provides a summary of the results of a multivariate data analysis.
 #' @param object A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
+#' @param axes A length-two [`numeric`] vector giving the dimensions to be
+#'  summarized.
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be summarized: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
 #' @param rank An [`integer`] value specifying the maximal number of components
-#'  to be kept in the results.
+#'  to be kept in the results. Deprecated, use `axes` instead.
 #' @param active A [`logical`] scalar: should the active observations be
 #'  summarized?
 #' @param sup A [`logical`] scalar: should the supplementary observations be
 #'  summarized?
+#' @param x A [`MultivariateSummary-class`] object.
+#' @param row.names A [`character`] vector giving the row names for the data
+#'  frame, or `NULL`.
+#' @param optional A [`logical`] scalar: should the names of the variables in
+#'  the data frame be checked? If `FALSE` then the names of the variables in the
+#'  data frame are checked to ensure that they are syntactically valid variable
+#'  names and are not duplicated.
 #' @param ... Currently not used.
 #' @example inst/examples/ex-summary.R
 #' @author N. Frerebeau
@@ -813,6 +816,20 @@ setGeneric(
 #' @family summary
 #' @name summary
 #' @rdname summary
+NULL
+
+#' Object Description
+#'
+#' @param x A [`CA-class`], [`MCA-class`] or [`PCA-class`] object.
+#' @param ... Further parameters to be passed to [cat()].
+#' @return
+#'  `describe()` is called for its side-effects. Invisibly returns `x`.
+#' @example inst/examples/ex-summary.R
+#' @author N. Frerebeau
+#' @family summary
+#' @docType methods
+#' @rdname describe
+#' @name describe
 NULL
 
 #' Tidy Coordinates

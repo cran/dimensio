@@ -184,7 +184,7 @@ Plots column/variable principal coordinates.
 data("iris")
 
 ## Compute principal components analysis
-X <- pca(iris, scale = TRUE)
+X <- pca(iris, scale = TRUE, sup_quali = "Species")
 
 ## Plot individuals
 viz_individuals(X, panel.last = graphics::grid())
@@ -221,8 +221,8 @@ Other plot methods:
 \code{\link{plot}()},
 \code{\link{screeplot}()},
 \code{\link{viz_contributions}()},
+\code{\link{viz_ellipses}()},
 \code{\link{viz_individuals}()},
-\code{\link{viz_wrap}},
 \code{\link{wrap}}
 }
 \author{

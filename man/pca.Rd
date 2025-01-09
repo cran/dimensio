@@ -19,7 +19,8 @@ pca(object, ...)
   sup_col = NULL,
   sup_quali = NULL,
   weight_row = NULL,
-  weight_col = NULL
+  weight_col = NULL,
+  autodetect = FALSE
 )
 
 \S4method{pca}{matrix}(
@@ -34,7 +35,7 @@ pca(object, ...)
 )
 }
 \arguments{
-\item{object}{A \eqn{m \times p}{m x p} numeric \code{\link{matrix}} or a
+\item{object}{A \eqn{m \times p}{m x p} \code{numeric} \code{\link{matrix}} or a
 \code{\link{data.frame}}.}
 
 \item{...}{Currently not used.}
@@ -63,6 +64,9 @@ internally normalized to sum 1}
 \item{weight_col}{A \code{\link{numeric}} vector specifying the active column
 (variable) weights. If \code{NULL} (the default), uniform weights (1) are
 used.}
+
+\item{autodetect}{A \code{\link{logical}} scalar: should non-numeric variables be
+automatically removed (except \code{sup_quali})?}
 }
 \value{
 A \code{\linkS4class{PCA}} object.
@@ -76,7 +80,7 @@ decomposition.
 data("iris")
 
 ## Compute principal components analysis
-X <- pca(iris)
+X <- pca(iris, sup_quali = "Species")
 
 ## Get eigenvalues
 get_eigenvalues(X)

@@ -16,8 +16,7 @@ data(iris)
 head(iris)
 
 ## Compute PCA
-## (non numeric variables are automatically removed)
-X <- pca(iris, center = TRUE, scale = TRUE)
+X <- pca(iris, center = TRUE, scale = TRUE, sup_quali = "Species")
 
 ## ----eigenvalues, fig.show='hold', out.width='50%'----------------------------
 ## Get eigenvalues
