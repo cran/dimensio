@@ -5,9 +5,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/tesselle/dimensio/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/dimensio/actions)
-[![codecov](https://codecov.io/gh/tesselle/dimensio/branch/main/graph/badge.svg?token=0mcb7gbZu3)](https://app.codecov.io/gh/tesselle/dimensio)
-[![CodeFactor](https://www.codefactor.io/repository/github/tesselle/dimensio/badge/main)](https://www.codefactor.io/repository/github/tesselle/dimensio/overview/main)
 [![Dependencies](https://tinyverse.netlify.app/badge/dimensio)](https://cran.r-project.org/package=dimensio)
 
 <a href="https://tesselle.r-universe.dev/dimensio"
@@ -57,7 +54,7 @@ To cite dimensio in publications use:
 
 Frerebeau N (2025). *dimensio: Multivariate Data Analysis*. Université
 Bordeaux Montaigne, Pessac, France. <doi:10.5281/zenodo.4478530>
-<https://doi.org/10.5281/zenodo.4478530>, R package version 0.11.0,
+<https://doi.org/10.5281/zenodo.4478530>, R package version 0.12.0,
 <https://packages.tesselle.org/dimensio/>.
 
 This package is a part of the tesselle project
@@ -72,11 +69,11 @@ You can install the released version of **dimensio** from
 install.packages("dimensio")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from [Codeberg](https://codeberg.org/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("tesselle/dimensio")
+remotes::install_git("https://codeberg.org/tesselle/dimensio")
 ```
 
 ## Usage
@@ -151,7 +148,7 @@ viz_individuals(
   x = X,
   extra_quanti = iris$Petal.Length,
   color = color("iridescent")(255), 
-  size = c(1, 2)
+  size = c(1, 3)
 )
 ```
 

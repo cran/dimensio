@@ -1,3 +1,5 @@
+Sys.setenv(LANGUAGE = "en") # Force locale
+
 if (at_home()) {
   using("tinysnapshot")
   options(tinysnapshot_device = "svglite")
@@ -5,8 +7,6 @@ if (at_home()) {
   options(tinysnapshot_width = 7)
   options(tinysnapshot_tol = 200) # pixels
   options(tinysnapshot_os = "Linux")
-
-  Sys.setenv(LANGUAGE = "en") # Force locale
 
   data("iris")
 
@@ -45,12 +45,12 @@ if (at_home()) {
   plot_ind_cos2 <- function() viz_individuals(res, extra_quanti = "cos2", size = c(0, 3))
   expect_snapshot_plot(plot_ind_cos2, "PCA_ind_highlight_cos2")
 
-  plot_ind_contrib <- function() viz_individuals(res, extra_quanti = "contrib", size = c(0, 1))
+  plot_ind_contrib <- function() viz_individuals(res, extra_quanti = "contrib", size = c(0, 3))
   expect_snapshot_plot(plot_ind_contrib, "PCA_var_highlight_contrib")
 
   plot_ind_group <- function() viz_individuals(res, extra_quali = iris$Species,
                                                extra_quanti = "contrib",
-                                               size = c(0, 1))
+                                               size = c(0, 3))
   expect_snapshot_plot(plot_ind_group, "PCA_ind_highlight_quali_quanti")
 
   # Variables

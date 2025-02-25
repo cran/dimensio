@@ -14,7 +14,7 @@ Simple Principal Components Analysis (PCA) and (Multiple) Correspondence Analysi
 \tabular{ll}{
 \strong{Package:} \tab dimensio \cr
 \strong{Type:} \tab Package \cr
-\strong{Version:} \tab 0.11.0 \cr
+\strong{Version:} \tab 0.12.0 \cr
 \strong{License:} \tab GPL-3 \cr
 \strong{Zenodo:} \tab \doi{10.5281/zenodo.4478530} \cr
 }
@@ -31,9 +31,9 @@ information on progress? Defaults to \code{\link[=interactive]{interactive()}}.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://codeberg.org/tesselle/dimensio}
   \item \url{https://packages.tesselle.org/dimensio/}
-  \item \url{https://github.com/tesselle/dimensio}
-  \item Report bugs at \url{https://github.com/tesselle/dimensio/issues}
+  \item Report bugs at \url{https://codeberg.org/tesselle/dimensio/issues}
 }
 
 }
