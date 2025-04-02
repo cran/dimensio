@@ -1,3 +1,14 @@
+# dimensio 0.13.0
+## New classes and methods
+* Add `export()` method for `PCOA` class.
+* Add `wrap_hull()`, `viz_hull()` methods for `PCOA` class.
+* Add `wrap_tolerance()`, `viz_tolerance()` methods for `PCOA` class.
+* Add `wrap_confidence()`, `viz_confidence()` methods for `PCOA` class.
+
+## Bugfixes & changes
+* Fix legend in `biplot()`.
+* Skip ellipse computation if there are less than three observations.
+
 # dimensio 0.12.0
 ## Bugfixes & changes
 * Fix legend in `viz_individuals()`.

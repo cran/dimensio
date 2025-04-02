@@ -4,7 +4,7 @@ NULL
 
 # Confidence ===================================================================
 #' @export
-#' @rdname wrap
+#' @rdname viz_confidence
 #' @aliases wrap_confidence,MultivariateAnalysis-method
 setMethod(
   f = "wrap_confidence",
@@ -40,6 +40,49 @@ setMethod(
     lapply(
       X = data,
       FUN = function(x, level) {
+        x <- stats::na.omit(x) # Drop NAs
+        if (nrow(x) < 3) return(NULL)
+
+        df1 <- ncol(x) - 1
+        df2 <- nrow(x) - 2
+        radius <- sqrt(stats::qf(p = level, df1, df2) * df1 / df2)
+        wrap_ellipse(x[, 1], x[, 2], radius = radius)
+      },
+      level = level
+    )
+  }
+)
+
+#' @export
+#' @rdname viz_confidence
+#' @aliases wrap_confidence,PCOA-method
+setMethod(
+  f = "wrap_confidence",
+  signature = c(x = "PCOA"),
+  definition = function(x, axes = c(1, 2), group = NULL, level = 0.95) {
+    ## Validation
+    arkhe::assert_type(axes, "numeric")
+    arkhe::assert_length(axes, 2)
+    arkhe::assert_type(level, "numeric")
+
+    ## Get coordinates
+    data <- get_coordinates(x)
+    data <- data[, axes]
+    n <- nrow(data)
+
+    ## Add groups, if any
+    if (length(group) == 0) group <- rep("", n)
+    group <- as.character(group)
+    arkhe::assert_length(group, n)
+
+    ## Compute ellipse
+    data <- split(data, f = group)
+    lapply(
+      X = data,
+      FUN = function(x, level) {
+        x <- stats::na.omit(x) # Drop NAs
+        if (nrow(x) < 3) return(NULL)
+
         df1 <- ncol(x) - 1
         df2 <- nrow(x) - 2
         radius <- sqrt(stats::qf(p = level, df1, df2) * df1 / df2)
@@ -52,7 +95,7 @@ setMethod(
 
 # Tolerance ====================================================================
 #' @export
-#' @rdname wrap
+#' @rdname viz_tolerance
 #' @aliases wrap_tolerance,MultivariateAnalysis-method
 setMethod(
   f = "wrap_tolerance",
@@ -63,6 +106,7 @@ setMethod(
     arkhe::assert_scalar(margin, "numeric")
     arkhe::assert_type(axes, "numeric")
     arkhe::assert_length(axes, 2)
+    arkhe::assert_type(level, "numeric")
 
     ## Get coordinates
     data <- get_coordinates(x, margin = margin)
@@ -87,8 +131,46 @@ setMethod(
     lapply(
       X = data,
       FUN = function(x, level) {
-        ## Drop NAs
-        x <- stats::na.omit(x)
+        x <- stats::na.omit(x) # Drop NAs
+        if (nrow(x) < 3) return(NULL)
+
+        df <- ncol(x) - 1
+        radius <- sqrt(stats::qchisq(p = level, df = df))
+        wrap_ellipse(x[, 1], x[, 2], radius = radius)
+      },
+      level = level
+    )
+  }
+)
+
+#' @export
+#' @rdname viz_tolerance
+#' @aliases wrap_tolerance,PCOA-method
+setMethod(
+  f = "wrap_tolerance",
+  signature = c(x = "PCOA"),
+  definition = function(x, axes = c(1, 2), group = NULL, level = 0.95) {
+    ## Validation
+    arkhe::assert_type(axes, "numeric")
+    arkhe::assert_length(axes, 2)
+    arkhe::assert_type(level, "numeric")
+
+    ## Get coordinates
+    data <- get_coordinates(x)
+    data <- data[, axes]
+    n <- nrow(data)
+
+    ## Add groups, if any
+    if (length(group) == 0) group <- rep("", n)
+    group <- as.character(group)
+    arkhe::assert_length(group, n)
+
+    ## Compute ellipse
+    data <- split(data, f = group)
+    lapply(
+      X = data,
+      FUN = function(x, level) {
+        x <- stats::na.omit(x) # Drop NAs
         if (nrow(x) < 3) return(NULL)
 
         df <- ncol(x) - 1

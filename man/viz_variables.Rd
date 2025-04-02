@@ -190,7 +190,7 @@ X <- pca(iris, scale = TRUE, sup_quali = "Species")
 viz_individuals(X, panel.last = graphics::grid())
 
 ## Labels of the 10 individuals with highest cos2
-viz_individuals(X, labels = list(how = "cos2", n = 10))
+viz_individuals(X, labels = list(filter = "cos2", n = 10))
 
 ## Plot variables
 viz_variables(X, panel.last = graphics::grid())
@@ -221,9 +221,7 @@ Other plot methods:
 \code{\link{plot}()},
 \code{\link{screeplot}()},
 \code{\link{viz_contributions}()},
-\code{\link{viz_ellipses}()},
-\code{\link{viz_individuals}()},
-\code{\link{wrap}}
+\code{\link{viz_individuals}()}
 }
 \author{
 N. Frerebeau

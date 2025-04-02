@@ -1,11 +1,13 @@
 Package: dimensio
 Title: Multivariate Data Analysis
-Version: 0.12.0
+Version: 0.13.0
 Authors@R: c(
     person("Nicolas", "Frerebeau", , "nicolas.frerebeau@u-bordeaux-montaigne.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5759-4944")),
     person("Jean-Baptiste", "Fourvel", , "jean-baptiste.fourvel@univ-amu.fr", role = "ctb",
            comment = c(ORCID = "0000-0002-1061-4642")),
+    person("Camille", "Thabard", , "camille.thabard@univ-tlse2.fr", role = "ctb",
+           comment = c(ORCID = "0000-0002-3196-7658")),
     person("Brice", "Lebrun", role = "art",
            comment = c(ORCID = "0000-0001-7503-8685", "Logo designer")),
     person("Université Bordeaux Montaigne", role = "fnd",
@@ -48,12 +50,13 @@ Collate: 'AllClasses.R' 'AllGenerics.R' 'annotations.R' 'augment.R'
         'viz_ellipse.R' 'viz_hull.R' 'wrap_ellipses.R' 'wrap_hull.R'
         'zzz.R'
 NeedsCompilation: no
-Packaged: 2025-02-25 20:09:17 UTC; nicolas
+Packaged: 2025-04-02 14:42:07 UTC; nicolas
 Author: Nicolas Frerebeau [aut, cre] (<https://orcid.org/0000-0001-5759-4944>),
   Jean-Baptiste Fourvel [ctb] (<https://orcid.org/0000-0002-1061-4642>),
+  Camille Thabard [ctb] (<https://orcid.org/0000-0002-3196-7658>),
   Brice Lebrun [art] (<https://orcid.org/0000-0001-7503-8685>, Logo
     designer),
   Université Bordeaux Montaigne [fnd] (03pbgwk21),
   CNRS [fnd] (02feahw73)
 Repository: CRAN
-Date/Publication: 2025-02-25 20:30:02 UTC
+Date/Publication: 2025-04-02 15:50:05 UTC

@@ -80,16 +80,20 @@ viz_individuals(
 
 ## ----plot-wrap, fig.show='hold', out.width='50%'------------------------------
 ## Add ellipses
-viz_individuals(x = X, extra_quali = iris$Species,
-                color = c("#004488", "#DDAA33", "#BB5566"))
-viz_tolerance(x = X, group = iris$Species, level = 0.95,
-              color = c("#004488", "#DDAA33", "#BB5566"))
+viz_individuals(
+  x = X, 
+  extra_quali = iris$Species,
+  ellipse = list(type = "tolerance", level = 0.95),
+  color = c("#004488", "#DDAA33", "#BB5566")
+)
 
 ## Add convex hull
-viz_individuals(x = X, extra_quali = iris$Species,
-                color = c("#004488", "#DDAA33", "#BB5566"))
-viz_hull(x = X, group = iris$Species, level = 0.95,
-         color = c("#004488", "#DDAA33", "#BB5566"))
+viz_individuals(
+  x = X,
+  extra_quali = iris$Species,
+  hull = TRUE,
+  color = c("#004488", "#DDAA33", "#BB5566")
+)
 
 ## ----plot-ind-petal-----------------------------------------------------------
 ## Highlight petal length
