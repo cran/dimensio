@@ -1,3 +1,7 @@
+# dimensio 0.14.0
+## Bugfixes & changes
+* `margin` and `axes` arguments of `viz_ellipses()`, `viz_tolerance()`, `viz_confidence()` and `viz_hull()` were removed. These values are automatically set from the last call to `viz_rows()`/`viz_individuals()` or `viz_columns()`/`viz_variables()`.
+
 # dimensio 0.13.0
 ## New classes and methods
 * Add `export()` method for `PCOA` class.

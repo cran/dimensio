@@ -5,9 +5,14 @@
 
 <!-- badges: start -->
 
-[![Code
-coverage](https://packages.tesselle.org/dimensio/coverage/badge.svg)](https://packages.tesselle.org/dimensio/coverage/)
-[![Dependencies](https://tinyverse.netlify.app/badge/dimensio)](https://cran.r-project.org/package=dimensio)
+<a href="https://packages.tesselle.org/dimensio/coverage/"
+class="pkgdown-devel"><img
+src="https://packages.tesselle.org/dimensio/coverage/badge.svg"
+alt="Code coverage" /></a>
+<a href="https://cran.r-project.org/package=dimensio"
+class="pkgdown-devel"><img
+src="https://tinyverse.netlify.app/badge/dimensio"
+alt="Dependencies" /></a>
 
 <a href="https://tesselle.r-universe.dev/dimensio"
 class="pkgdown-devel"><img
@@ -56,7 +61,7 @@ To cite dimensio in publications use:
 
 Frerebeau N (2025). *dimensio: Multivariate Data Analysis*. Université
 Bordeaux Montaigne, Pessac, France. <doi:10.5281/zenodo.4478530>
-<https://doi.org/10.5281/zenodo.4478530>, R package version 0.13.0,
+<https://doi.org/10.5281/zenodo.4478530>, R package version 0.14.0,
 <https://packages.tesselle.org/dimensio/>.
 
 This package is a part of the tesselle project

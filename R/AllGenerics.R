@@ -693,14 +693,17 @@ setGeneric(
 #' Convex Hulls
 #'
 #' Plots convex hull of a set of observations.
-#' @param x An object from which to wrap observations (a [`CA-class`],
-#'  [`MCA-class`] or [`PCA-class`] object).
+#' @param x,y A [`numeric`] vector. If `y` is missing, `x` must be an object
+#'  from which to wrap observations (a [`CA-class`], [`MCA-class`] or
+#'  [`PCA-class`] object).
 #' @param margin A length-one [`numeric`] vector giving the subscript which the
 #'  data will be returned: `1` indicates individuals/rows (the default), `2`
 #'  indicates variables/columns.
 #' @param axes A length-two [`numeric`] vector giving the dimensions
 #'  for which to compute results.
 #' @param group A vector specifying the group an observation belongs to.
+#' @param principal A [`logical`] scalar: should principal coordinates be
+#'  used? If `FALSE`, standard coordinates are returned.
 #' @param color The colors for borders (will be mapped to `group`).
 #'  Ignored if set to `FALSE`. If `NULL`, the default color scheme will be used.
 #' @param fill The background colors (will be mapped to `group`).
@@ -723,14 +726,14 @@ setGeneric(
 #' @aliases viz_hull-method
 setGeneric(
   name = "viz_hull",
-  def = function(x, ...) standardGeneric("viz_hull")
+  def = function(x, y, ...) standardGeneric("viz_hull")
 )
 
 #' @rdname viz_hull
 #' @aliases wrap_hull-method
 setGeneric(
   name = "wrap_hull",
-  def = function(x, ...) standardGeneric("wrap_hull")
+  def = function(x, y, ...) standardGeneric("wrap_hull")
 )
 
 #' Ellipses
@@ -751,12 +754,13 @@ setGeneric(
 #' @aliases viz_ellipses-method
 setGeneric(
   name = "viz_ellipses",
-  def = function(x, ...) standardGeneric("viz_ellipses")
+  def = function(x, y, ...) standardGeneric("viz_ellipses")
 )
 
 #' Confidence Ellipses
 #'
 #' Plots confidence ellipses.
+#' @inheritParams viz_hull
 #' @inheritParams viz_ellipses
 #' @return
 #'  `wrap_confidence()` returns a [`data.frame`] of envelope `x` and `y`
@@ -772,19 +776,20 @@ setGeneric(
 #' @aliases viz_confidence-method
 setGeneric(
   name = "viz_confidence",
-  def = function(x, ...) standardGeneric("viz_confidence")
+  def = function(x, y, ...) standardGeneric("viz_confidence")
 )
 
 #' @rdname viz_confidence
 #' @aliases wrap_confidence-method
 setGeneric(
   name = "wrap_confidence",
-  def = function(x, ...) standardGeneric("wrap_confidence")
+  def = function(x, y, ...) standardGeneric("wrap_confidence")
 )
 
 #' Tolerance Ellipses
 #'
 #' Plots tolerance ellipses.
+#' @inheritParams viz_hull
 #' @inheritParams viz_ellipses
 #' @return
 #'  `wrap_tolerance()` returns a [`data.frame`] of envelope `x` and `y`
@@ -800,14 +805,14 @@ setGeneric(
 #' @aliases viz_tolerance-method
 setGeneric(
   name = "viz_tolerance",
-  def = function(x, ...) standardGeneric("viz_tolerance")
+  def = function(x, y, ...) standardGeneric("viz_tolerance")
 )
 
 #' @rdname viz_tolerance
 #' @aliases wrap_tolerance-method
 setGeneric(
   name = "wrap_tolerance",
-  def = function(x, ...) standardGeneric("wrap_tolerance")
+  def = function(x, y, ...) standardGeneric("wrap_tolerance")
 )
 
 # Summarize ====================================================================

@@ -4,45 +4,57 @@ NULL
 
 #' @export
 #' @rdname viz_hull
-#' @aliases viz_hull,MultivariateAnalysis-method
+#' @aliases viz_hull,numeric,numeric-method
 setMethod(
   f = "viz_hull",
-  signature = c(x = "MultivariateAnalysis"),
-  definition = function(x, ..., margin = 1, axes = c(1, 2), group = NULL,
+  signature = c(x = "numeric", y = "numeric"),
+  definition = function(x, y, ..., group = NULL,
                         color = NULL, fill = FALSE, symbol = FALSE) {
-    hull <- wrap_hull(x, margin = margin, axes = axes, group = group)
-    .viz_hull(hull, ..., color = color, fill = fill, symbol = symbol)
+    hull <- wrap_hull(x, y, group = group)
+    .viz_hull(hull, color = color, fill = fill, symbol = symbol, ...)
+    invisible(list(x = x, y = y))
+  }
+)
 
+#' @export
+#' @rdname viz_hull
+#' @aliases viz_hull,MultivariateAnalysis,missing-method
+setMethod(
+  f = "viz_hull",
+  signature = c(x = "MultivariateAnalysis", y = "missing"),
+  definition = function(x, ..., group = NULL,
+                        color = NULL, fill = FALSE, symbol = FALSE) {
+    hull <- wrap_hull(x, margin = get_margin(), axes = get_axes(),
+                      group = group, principal = get_principal())
+    .viz_hull(hull, color = color, fill = fill, symbol = symbol, ...)
     invisible(x)
   }
 )
 
 #' @export
 #' @rdname viz_hull
-#' @aliases viz_hull,BootstrapCA-method
+#' @aliases viz_hull,MultivariateBootstrap,missing-method
 setMethod(
   f = "viz_hull",
-  signature = c(x = "BootstrapCA"),
-  definition = function(x, ..., margin = 1, axes = c(1, 2),
-                        color = FALSE, fill = FALSE, symbol = FALSE) {
-    group <- get_groups(x, margin = margin)
-    methods::callNextMethod(x, margin = margin, axes = axes, group = group,
-                            color = color, fill = fill, symbol = symbol, ...)
+  signature = c(x = "MultivariateBootstrap", y = "missing"),
+  definition = function(x, ..., color = FALSE, fill = FALSE, symbol = FALSE) {
+    hull <- wrap_hull(x, margin = get_margin(), axes = get_axes(),
+                      group = NULL, principal = get_principal())
+    .viz_hull(hull, color = color, fill = fill, symbol = symbol, ...)
     invisible(x)
   }
 )
 
 #' @export
 #' @rdname viz_hull
-#' @aliases viz_hull,PCOA-method
+#' @aliases viz_hull,PCOA,missing-method
 setMethod(
   f = "viz_hull",
-  signature = c(x = "PCOA"),
-  definition = function(x, ..., axes = c(1, 2), group = NULL,
+  signature = c(x = "PCOA", y = "missing"),
+  definition = function(x, ..., group = NULL,
                         color = FALSE, fill = FALSE, symbol = FALSE) {
-    hull <- wrap_hull(x, axes = axes, group = group)
-    .viz_hull(hull, ..., color = color, fill = fill, symbol = symbol)
-
+    hull <- wrap_hull(x, axes = get_axes(), group = group)
+    .viz_hull(hull, color = color, fill = fill, symbol = symbol, ...)
     invisible(x)
   }
 )
@@ -62,12 +74,12 @@ setMethod(
   if (n > 1) {
     ## Discrete scales
     extra_quali <- names(x)
-    if (!isFALSE(color))
-      col <- khroma::palette_color_discrete(colors = color)(extra_quali)
-    if (!isFALSE(fill))
-      bg <- khroma::palette_color_discrete(colors = fill)(extra_quali)
-    if (!isFALSE(symbol))
-      lty <- khroma::palette_line(types = symbol)(extra_quali)
+    if (is.null(dots$border) && !isFALSE(color))
+      col <- khroma::palette_color_discrete(color)(extra_quali)
+    if (is.null(dots$col) && !isFALSE(fill))
+      bg <- khroma::palette_color_discrete(fill)(extra_quali)
+    if (is.null(dots$lty) && !isFALSE(symbol))
+      lty <- khroma::palette_line(symbol)(extra_quali)
   }
 
   for (i in seq_along(x)) {
