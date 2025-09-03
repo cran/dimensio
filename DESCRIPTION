@@ -1,6 +1,6 @@
 Package: dimensio
 Title: Multivariate Data Analysis
-Version: 0.14.0
+Version: 0.14.1
 Authors@R: c(
     person("Nicolas", "Frerebeau", , "nicolas.frerebeau@u-bordeaux-montaigne.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5759-4944")),
@@ -36,7 +36,7 @@ Suggests: fontquiver, knitr, markdown, rsvg, svglite, tinysnapshot,
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2.9000
+RoxygenNote: 7.3.2
 X-schema.org-isPartOf: https://www.tesselle.org
 X-schema.org-keywords: data-analysis, multivariate-analysis, r-package
 Collate: 'AllClasses.R' 'AllGenerics.R' 'annotations.R' 'augment.R'
@@ -52,7 +52,7 @@ Collate: 'AllClasses.R' 'AllGenerics.R' 'annotations.R' 'augment.R'
         'viz_ellipse.R' 'viz_hull.R' 'wrap_ellipses.R' 'wrap_hull.R'
         'zzz.R'
 NeedsCompilation: no
-Packaged: 2025-05-20 07:42:15 UTC; nfrerebeau
+Packaged: 2025-09-03 15:40:30 UTC; nfrerebeau
 Author: Nicolas Frerebeau [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-5759-4944>),
   Jean-Baptiste Fourvel [ctb] (ORCID:
@@ -63,4 +63,4 @@ Author: Nicolas Frerebeau [aut, cre] (ORCID:
   Université Bordeaux Montaigne [fnd] (ROR: <https://ror.org/03pbgwk21>),
   CNRS [fnd] (ROR: <https://ror.org/02feahw73>)
 Repository: CRAN
-Date/Publication: 2025-05-20 09:20:09 UTC
+Date/Publication: 2025-09-03 16:00:02 UTC
